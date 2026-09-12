@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>多益新制聽力模擬測驗題庫 | TOEIC Listening Practice</title>
+<style>
+:root{
+  --brand:#1a365d;
+  --accent:#2b6cb0;
+  --bg:#f7fafc;
+  --card-bg:#ffffff;
+  --text:#2d3748;
+  --muted:#718096;
+  --border:#e2e8f0;
+  --shadow:0 4px 20px rgba(0,0,0,0.06);
+  --shadow-hover:0 12px 30px rgba(0,0,0,0.12);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+}
+.hero{
+  background:linear-gradient(135deg,#0f2b48,#1e4e79);
+  color:#fff;
+  padding:3.5rem 1.5rem 3rem;
+  text-align:center;
+}
+.hero-inner{
+  max-width:860px;
+  margin:0 auto;
+}
+.badge{
+  display:inline-block;
+  background:rgba(255,255,255,0.18);
+  border:1px solid rgba(255,255,255,0.3);
+  padding:.3rem .9rem;
+  border-radius:999px;
+  font-size:.85rem;
+  font-weight:700;
+  letter-spacing:.05em;
+  margin-bottom:1rem;
+}
+.hero h1{
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  margin:0 0 .8rem;
+  font-weight:800;
+  letter-spacing:-.02em;
+}
+.hero p{
+  font-size:clamp(1rem,2vw,1.18rem);
+  margin:0 auto;
+  opacity:.9;
+  max-width:640px;
+}
+.container{
+  max-width:1160px;
+  margin:0 auto;
+  padding:2.5rem 1.25rem 4rem;
+}
+.info-banner{
+  background:#fff;
+  border:1px solid var(--border);
+  border-left:5px solid var(--accent);
+  border-radius:12px;
+  padding:1.2rem 1.5rem;
+  margin-bottom:2.5rem;
+  box-shadow:var(--shadow);
+  display:flex;
+  gap:1.5rem;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.info-item{
+  display:flex;
+  align-items:center;
+  gap:.6rem;
+  font-size:.95rem;
+  color:var(--text);
+}
+.info-item strong{color:var(--brand)}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
+  gap:1.5rem;
+}
+.card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:1.6rem;
+  box-shadow:var(--shadow);
+  transition:transform .2s,box-shadow .2s,border-color .2s;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+}
+.card:hover{
+  transform:translateY(-4px);
+  box-shadow:var(--shadow-hover);
+  border-color:var(--accent);
+}
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  margin-bottom:1rem;
+}
+.test-num{
+  font-size:1.4rem;
+  font-weight:800;
+  color:var(--brand);
+}
+.test-tag{
+  font-size:.78rem;
+  font-weight:700;
+  padding:.25rem .65rem;
+  border-radius:999px;
+  background:#edf2f7;
+  color:#4a5568;
+}
+.card-meta{
+  display:flex;
+  gap:1rem;
+  font-size:.88rem;
+  color:var(--muted);
+  margin-bottom:1.2rem;
+}
+.parts-pills{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.5rem;
+  margin-bottom:1.6rem;
+  font-size:.82rem;
+}
+.pill{
+  background:#f7fafc;
+  border:1px solid #edf2f7;
+  border-radius:8px;
+  padding:.4rem .6rem;
+  color:#4a5568;
+}
+.btn-start{
+  margin-top:auto;
+  display:block;
+  text-align:center;
+  background:var(--brand);
+  color:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:.85rem;
+  border-radius:10px;
+  transition:background .15s,transform .15s;
+}
+.btn-start:hover{
+  background:var(--accent);
+}
+footer{
+  text-align:center;
+  padding:2rem 1rem;
+  color:var(--muted);
+  font-size:.88rem;
+  border-top:1px solid var(--border);
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-inner">
+    <div class="badge">TOEIC 2026 最新制</div>
+    <h1>新制多益聽力線上模擬測驗</h1>
+    <p>提供完整 10 回高品質聽力真題模擬練習。免登入、即點即練，支援即時評分與完整錯題檢討。</p>
+  </div>
+</div>
+
+<main class="container">
+  <div class="info-banner">
+    <div class="info-item">🎧 <strong>建議配戴耳機</strong> 練習最佳音質</div>
+    <div class="info-item">⏱ <strong>每回時間</strong> 約 45 分鐘（100 題）</div>
+    <div class="info-item">📊 <strong>交卷即評分</strong> 各 Part 正確率與錯題對照</div>
+    <div class="info-item">💾 <strong>進度自動保存</strong> 刷新頁面不遺失</div>
+  </div>
+
+  <div class="grid">
+    
+    <div class="card" style="border-top: 4px solid #143a5a;">
+      <div class="card-top">
+        <div class="test-num" style="color: #143a5a;">Mock Test 1</div>
+        <div class="test-tag">Executive Blue</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test1.html" class="btn-start" style="background: #143a5a;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #174b43;">
+      <div class="card-top">
+        <div class="test-num" style="color: #174b43;">Mock Test 2</div>
+        <div class="test-tag">Emerald Finance</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test2.html" class="btn-start" style="background: #174b43;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #612d3d;">
+      <div class="card-top">
+        <div class="test-num" style="color: #612d3d;">Mock Test 3</div>
+        <div class="test-tag">Burgundy Legal</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test3.html" class="btn-start" style="background: #612d3d;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #65402c;">
+      <div class="card-top">
+        <div class="test-num" style="color: #65402c;">Mock Test 4</div>
+        <div class="test-tag">Copper Logistics</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test4.html" class="btn-start" style="background: #65402c;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #303a70;">
+      <div class="card-top">
+        <div class="test-num" style="color: #303a70;">Mock Test 5</div>
+        <div class="test-tag">Indigo Technology</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test5.html" class="btn-start" style="background: #303a70;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #15515a;">
+      <div class="card-top">
+        <div class="test-num" style="color: #15515a;">Mock Test 6</div>
+        <div class="test-tag">Teal Healthcare</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test6.html" class="btn-start" style="background: #15515a;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #334657;">
+      <div class="card-top">
+        <div class="test-num" style="color: #334657;">Mock Test 7</div>
+        <div class="test-tag">Slate Aviation</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test7.html" class="btn-start" style="background: #334657;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #55355f;">
+      <div class="card-top">
+        <div class="test-num" style="color: #55355f;">Mock Test 8</div>
+        <div class="test-tag">Plum Hospitality</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test8.html" class="btn-start" style="background: #55355f;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #203f72;">
+      <div class="card-top">
+        <div class="test-num" style="color: #203f72;">Mock Test 9</div>
+        <div class="test-tag">Cobalt Consulting</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test9.html" class="btn-start" style="background: #203f72;">開始測驗 (Start Test)</a>
+    </div>
+
+    <div class="card" style="border-top: 4px solid #244c3a;">
+      <div class="card-top">
+        <div class="test-num" style="color: #244c3a;">Mock Test 10</div>
+        <div class="test-tag">Forest Sustainability</div>
+      </div>
+      <div class="card-meta">
+        <span>📝 100 題完整測驗</span>
+        <span>⏱ 約 45 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 1: 照片描述 (6 題)</div>
+        <div class="pill">Part 2: 應答問題 (25 題)</div>
+        <div class="pill">Part 3: 簡短對話 (39 題)</div>
+        <div class="pill">Part 4: 簡短獨白 (30 題)</div>
+      </div>
+      <a href="test10.html" class="btn-start" style="background: #244c3a;">開始測驗 (Start Test)</a>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>TOEIC® Listening Practice Portal &middot; 專為家教教學與個人模考設計</p>
+</footer>
+</body>
+</html>

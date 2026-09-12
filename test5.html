@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>多益聽力模擬測驗 Test 5 | TOEIC Listening Practice</title>
+<style>
+:root{--brand:#303a70;--accent:#5866b4;--pale:#eef0fa;--line:#dadff0;--bg:#f6f7fb;--focus:#d59a32;--ink:#172433;--muted:#617080;--good:#13734a;--bad:#b73832;--paper:#fff;--shadow:0 12px 30px rgba(25,42,58,.09)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;min-width:0}body{margin:0;min-width:0;background:radial-gradient(circle at 92% 0,var(--pale) 0,transparent 28rem),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;line-height:1.55;overflow-x:hidden}
+button,input,label{font:inherit}button{cursor:pointer;touch-action:manipulation}
+.top{position:relative;overflow:hidden;background:linear-gradient(118deg,var(--brand),var(--accent));color:#fff;padding:1.25rem max(1rem,calc((100% - 1180px)/2));box-shadow:0 3px 14px #0003}
+.top:after{content:"";position:absolute;width:18rem;height:18rem;border:4rem solid #fff1;border-radius:50%;right:-6rem;top:-10rem}
+.top-inner{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:1rem}
+.top-left{display:flex;flex-direction:column;gap:.3rem}
+.back-btn{display:inline-flex;align-items:center;gap:.4rem;color:#fff;text-decoration:none;font-size:.9rem;font-weight:700;opacity:.9;transition:opacity .15s}
+.back-btn:hover{opacity:1;text-decoration:underline}
+.top h1{font-size:clamp(1.35rem,3vw,2.05rem);line-height:1.2;margin:0}
+.top p{margin:0;color:#fff;opacity:.85;font-size:.92rem}
+.theme-badge{flex:none;border:1px solid #ffffff55;background:#ffffff18;border-radius:999px;padding:.38rem .75rem;font-size:.8rem;font-weight:700;letter-spacing:.03em}
+.shell{width:min(100%,1180px);margin:auto;padding:clamp(.7rem,2vw,1.35rem)}
+.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.7rem;margin-bottom:1rem}
+.part-tab{min-width:0;border:1px solid var(--line);border-top:4px solid transparent;background:#fff;border-radius:.85rem;padding:.78rem;text-align:left;color:var(--ink);box-shadow:0 4px 14px #1e344510;transition:transform .15s,box-shadow .15s,border-color .15s}
+.part-tab:not([disabled]):hover{transform:translateY(-2px);box-shadow:0 8px 20px #1e34451c}
+.part-tab strong,.part-tab span{display:block}
+.part-tab span{overflow:hidden;text-overflow:ellipsis;font-size:.8rem;color:var(--muted)}
+.part-tab[disabled]{opacity:.48;cursor:not-allowed}
+.part-tab.active{border-top-color:var(--accent);background:var(--pale);outline:2px solid color-mix(in srgb,var(--accent) 38%,transparent)}
+.panel{display:none}
+.panel.active{display:block}
+.part-head{background:#fffc;border:1px solid var(--line);border-radius:1rem;padding:clamp(.85rem,2vw,1.15rem);margin-bottom:1rem;position:sticky;top:.35rem;z-index:4;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.part-head h2{margin:0;font-size:clamp(1.15rem,2.5vw,1.45rem);color:var(--brand)}
+.directions{color:var(--muted);margin:.25rem 0 .85rem;font-size:.9rem}
+.player{display:flex;align-items:center;gap:.8rem}
+.start{min-height:44px;border:0;border-radius:.65rem;background:var(--accent);color:#fff;font-weight:800;padding:.7rem 1.05rem;box-shadow:0 4px 12px color-mix(in srgb,var(--accent) 28%,transparent)}
+.start:disabled{background:#8794a0;box-shadow:none;cursor:not-allowed}
+.practice-audio{display:block;flex:1;min-width:12rem;max-width:100%;height:44px;accent-color:var(--accent)}
+.audio-state{min-width:5.5rem;color:var(--muted);font-size:.86rem;font-weight:700}
+.set{background:color-mix(in srgb,var(--pale) 76%,#fff);border:1px solid var(--line);border-radius:1rem;padding:clamp(.45rem,1.5vw,.85rem);margin:0 0 1rem}
+.set-label{font-weight:800;color:var(--brand);padding:.25rem .4rem .7rem}
+.graphic,.photo{display:block;width:auto;height:auto;max-width:100%;object-fit:contain;object-position:center;margin:.3rem auto 1rem;border-radius:.65rem;background:#fff;box-shadow:0 4px 16px #20384d15}
+.graphic{width:min(100%,760px)}
+.photo{width:min(100%,780px)}
+.question{min-width:0;background:#fff;border:1px solid var(--line);border-radius:.85rem;padding:clamp(.75rem,2vw,1rem);margin:.58rem;box-shadow:0 3px 12px #20384d0b}
+.question h3{font-size:1rem;margin:0 0 .75rem;overflow-wrap:anywhere}
+.qnum{font-size:1.05rem;margin:0 0 .55rem;color:var(--brand)}
+.choices{display:grid;gap:.48rem}
+.choice{display:flex;min-width:0;align-items:flex-start;gap:.65rem;border:1px solid var(--line);border-radius:.65rem;padding:.68rem .75rem;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.choice:hover{background:var(--pale);border-color:var(--accent)}
+.choice:has(input:checked){background:var(--pale);border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.choice:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:1px}
+.choice input{flex:none;margin:.24rem 0 0;accent-color:var(--accent)}
+.choice span{min-width:0;overflow-wrap:anywhere}
+.submit-row{background:#fff;border:1px solid var(--line);border-radius:.85rem;padding:1rem;display:flex;align-items:center;gap:1rem;justify-content:space-between;box-shadow:var(--shadow)}
+.submit{min-height:44px;border:0;border-radius:.65rem;padding:.72rem 1.15rem;background:var(--brand);color:#fff;font-weight:800}
+.submit:disabled{opacity:.45;cursor:not-allowed}
+.result{display:none;background:#fff;border-left:5px solid var(--good);border-radius:.7rem;padding:1rem;margin:1rem 0;box-shadow:var(--shadow)}
+.result.show{display:block}
+.result strong{font-size:1.2rem}
+.review-correct{border-color:#80c6a5;background:#f3fbf7}
+.review-wrong{border-color:#e4a39e;background:#fff7f6}
+.review-note{display:none;font-weight:700;margin:.6rem 0 0}
+.submitted .review-note{display:block}
+.good{color:var(--good)}
+.bad{color:var(--bad)}
+.completion-summary{background:#fff;border:1px solid var(--line);border-top:6px solid var(--accent);border-radius:1rem;padding:clamp(.9rem,2.4vw,1.4rem);margin:1.15rem 0;box-shadow:var(--shadow);scroll-margin-top:1rem}
+.completion-summary:focus{outline:3px solid var(--focus);outline-offset:3px}
+.completion-summary h2{margin:0;color:var(--brand);font-size:clamp(1.3rem,3vw,1.8rem)}
+.summary-lead{margin:.25rem 0 1rem;color:var(--muted)}
+.score-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-bottom:.8rem}
+.score-box{min-width:0;background:var(--pale);border:1px solid var(--line);border-radius:.75rem;padding:.78rem;text-align:center}
+.score-box span{display:block;color:var(--muted);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+.score-box strong{display:block;color:var(--brand);font-size:clamp(1.2rem,3vw,1.7rem);overflow-wrap:anywhere}
+.part-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.55rem;margin:.8rem 0 1.2rem}
+.part-score{border:1px solid var(--line);border-radius:.7rem;padding:.68rem;background:#fff}
+.part-score b,.part-score span{display:block}
+.part-score span{color:var(--muted);font-size:.86rem}
+.missed-heading{margin:0 0 .65rem;color:var(--brand);font-size:1.08rem}
+.missed-list{display:grid;gap:.55rem}
+.missed-row{display:grid;grid-template-columns:minmax(7rem,1.2fr) repeat(2,minmax(6rem,.8fr)) auto;gap:.65rem;align-items:center;border:1px solid #e9c6c2;background:#fff8f7;border-radius:.72rem;padding:.7rem}
+.missed-row span{min-width:0;overflow-wrap:anywhere}
+.missed-label{font-size:.75rem;color:var(--muted);display:block}
+.review-jump{min-height:40px;border:1px solid var(--accent);border-radius:.55rem;background:#fff;color:var(--brand);font-weight:800;padding:.5rem .7rem}
+.review-jump:hover{background:var(--pale)}
+.perfect-note{border:1px solid #a7d7bf;background:#f3fbf7;color:var(--good);border-radius:.72rem;padding:.85rem;font-weight:800}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.foot{text-align:center;color:var(--muted);font-size:.82rem;padding:2rem}
+@media(max-width:760px){
+.top{padding:1rem}
+.top-inner{align-items:flex-start;flex-direction:column}
+.theme-badge{font-size:.7rem}
+.shell{padding:.65rem}
+.summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}
+.part-head{position:static}
+.player{flex-wrap:wrap}
+.practice-audio{order:3;flex-basis:100%;width:100%}
+.audio-state{min-width:0;margin-left:auto}
+.question{margin:.45rem 0}
+.submit-row{align-items:stretch;flex-direction:column}
+.submit{width:100%}
+.missed-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+.review-jump{grid-column:1/-1;width:100%}
+}
+@media(max-width:520px){
+.score-overview{grid-template-columns:1fr}
+.score-box{display:flex;align-items:center;justify-content:space-between;text-align:left;gap:.7rem}
+.score-box strong{font-size:1.25rem}
+.part-breakdown{grid-template-columns:repeat(2,minmax(0,1fr))}
+.missed-row{grid-template-columns:1fr}
+.review-jump{grid-column:auto}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="top-left">
+      <a href="index.html" class="back-btn">← 回到測驗選單</a>
+      <h1>多益聽力模擬測驗 Test 5</h1>
+      <p>100 題 · 全四部分完整練習 · 支援暫停與即時錯題解析</p>
+    </div>
+    <span class="theme-badge">Indigo Technology</span>
+  </div>
+</header>
+<main class="shell" data-test-id="toeic-listening-test">
+  <nav class="summary" aria-label="Listening test parts" id="partTabs"></nav>
+  <div id="parts"></div>
+  <section class="completion-summary" data-completion-summary hidden tabindex="-1" aria-labelledby="completionTitle">
+    <h2 id="completionTitle">測驗成果與錯題檢視 (Results & Review)</h2>
+    <p class="summary-lead">恭喜完成練習！以下為本次作答成績統計與錯題分析：</p>
+    <div class="score-overview">
+      <div class="score-box"><span>總得分 (Total Score)</span><strong><span data-final-score>0</span> / <span data-final-total>0</span></strong></div>
+      <div class="score-box"><span>正確率 (Percentage)</span><strong data-final-percent>0%</strong></div>
+      <div class="score-box"><span>錯誤題數 (Incorrect)</span><strong data-final-missed>0</strong></div>
+    </div>
+    <div class="part-breakdown" data-part-breakdown></div>
+    <h3 class="missed-heading">錯題檢討清單 (點擊可跳轉至該題)</h3>
+    <div class="missed-list" data-missed-list></div>
+  </section>
+  <p class="foot">作答紀錄會自動儲存於瀏覽器，刷新頁面進度不會遺失。</p>
+</main>
+<div class="sr-only" id="announcer" aria-live="polite"></div>
+<script id="testData" type="application/json">{"test":5,"practice":true,"parts":[{"number":1,"title":"Photographs","audio":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/audio/Part_1_Photographs.mp3","questions":[{"id":1,"answer":"C","image":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p1_q1.png","interaction":0},{"id":2,"answer":"A","image":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p1_q2.png","interaction":1},{"id":3,"answer":"D","image":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p1_q3.png","interaction":2},{"id":4,"answer":"B","image":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p1_q4.png","interaction":3},{"id":5,"answer":"A","image":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p1_q5.png","interaction":4},{"id":6,"answer":"C","image":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p1_q6.png","interaction":5}]},{"number":2,"title":"Question–Response","audio":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/audio/Part_2_Question_Response.mp3","questions":[{"id":7,"answer":"B","interaction":6},{"id":8,"answer":"C","interaction":7},{"id":9,"answer":"A","interaction":8},{"id":10,"answer":"C","interaction":9},{"id":11,"answer":"A","interaction":10},{"id":12,"answer":"B","interaction":11},{"id":13,"answer":"C","interaction":12},{"id":14,"answer":"A","interaction":13},{"id":15,"answer":"B","interaction":14},{"id":16,"answer":"C","interaction":15},{"id":17,"answer":"A","interaction":16},{"id":18,"answer":"A","interaction":17},{"id":19,"answer":"B","interaction":18},{"id":20,"answer":"C","interaction":19},{"id":21,"answer":"B","interaction":20},{"id":22,"answer":"A","interaction":21},{"id":23,"answer":"C","interaction":22},{"id":24,"answer":"B","interaction":23},{"id":25,"answer":"C","interaction":24},{"id":26,"answer":"A","interaction":25},{"id":27,"answer":"A","interaction":26},{"id":28,"answer":"B","interaction":27},{"id":29,"answer":"B","interaction":28},{"id":30,"answer":"C","interaction":29},{"id":31,"answer":"A","interaction":30}]},{"number":3,"title":"Conversations","audio":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/audio/Part_3_Conversations.mp3","questions":[{"id":32,"stem":"What is the man trying to arrange?","options":{"A":"A refund for a canceled appointment","B":"A routine dental cleaning","C":"A prescription refill","D":"A referral to a specialist"},"answer":"B","set":1,"graphic":null,"interaction":31},{"id":33,"stem":"What does the man need to bring to the appointment?","options":{"A":"A printed insurance card","B":"A form of payment","C":"A previous X-ray file","D":"A referral letter"},"answer":"A","set":1,"graphic":null,"interaction":32},{"id":34,"stem":"What will the woman most likely do next?","options":{"A":"Send a confirmation text message","B":"Cancel the Friday appointment","C":"Print out a treatment brochure","D":"Transfer the call to another clinic"},"answer":"A","set":1,"graphic":null,"interaction":33},{"id":35,"stem":"Why is the man visiting the bank today?","options":{"C":"Open a new business checking account","A":"Apply for a small business loan","D":"Dispute a fee on his statement","B":"Order replacement debit cards"},"answer":"A","set":2,"graphic":null,"interaction":34},{"id":36,"stem":"What documents does the woman ask the man to provide?","options":{"B":"A government-issued photo ID","A":"A signed commercial lease","D":"Tax returns and a profit-and-loss statement","C":"Three months of personal bank statements"},"answer":"D","set":2,"graphic":null,"interaction":35},{"id":37,"stem":"According to the woman, when can the man expect a preliminary decision?","options":{"D":"Within about five business days","A":"Immediately, while he waits","B":"After a follow-up interview","C":"Within two to three months"},"answer":"D","set":2,"graphic":null,"interaction":36},{"id":38,"stem":"Who most likely is the woman?","options":{"A":"A university admissions officer","D":"An IT support technician","C":"A guest lecturer","B":"A textbook publisher"},"answer":"C","set":3,"graphic":null,"interaction":37},{"id":39,"stem":"Why does the man suggest Lecture Hall 2?","options":{"C":"It is closest to the parking lot.","D":"It was recently renovated.","B":"It is the only room available that day.","A":"It has a large enough capacity and a working microphone."},"answer":"A","set":3,"graphic":null,"interaction":38},{"id":40,"stem":"What will the woman send by Monday?","options":{"D":"Her presentation slides","A":"A signed contract","C":"A list of required textbooks","B":"A parking permit request"},"answer":"D","set":3,"graphic":null,"interaction":39},{"id":41,"stem":"Why is the woman in a hurry to get her license?","options":{"A":"She has a driving test scheduled for tomorrow.","D":"She is relocating abroad for a job in three weeks.","C":"Her current license is about to expire.","B":"She lost her previous license."},"answer":"D","set":4,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_1.png","interaction":40},{"id":42,"stem":"What outcome does the woman want from the lessons?","options":{"D":"The lowest possible price","B":"A private one-on-one instructor","A":"As many practice hours as possible","C":"Lessons only on weekends"},"answer":"A","set":4,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_1.png","interaction":41},{"id":43,"stem":"Look at the graphic. Which package will the speakers most likely choose?","options":{"B":"Starter Package","C":"Standard Package","D":"Full License Package","A":"Intensive Package"},"answer":"A","set":4,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_1.png","interaction":42},{"id":44,"stem":"What issue has occurred with the packaging shipment?","options":{"A":"It failed a quality inspection.","B":"It will arrive two weeks later than planned.","C":"It was delivered to the wrong warehouse.","D":"It was canceled by the supplier."},"answer":"B","set":5,"graphic":null,"interaction":43},{"id":45,"stem":"What does the second man report about the secondary supplier?","options":{"A":"It can deliver a partial order within five days at a higher cost.","B":"It offered a lower price than the original supplier.","C":"It has permanently stopped production.","D":"It requires a minimum order of one thousand units."},"answer":"A","set":5,"graphic":null,"interaction":44},{"id":46,"stem":"What does the first man decide to do?","options":{"A":"Cancel the order with the original supplier entirely","B":"Reduce production targets for the quarter","C":"Wait two more weeks for the original shipment","D":"Place an order with the secondary supplier today"},"answer":"D","set":5,"graphic":null,"interaction":45},{"id":47,"stem":"Why is the woman speaking with the front desk clerk?","options":{"B":"To cancel her hotel reservation","C":"To request a late check-out time","D":"To ask about the hotel shuttle schedule","A":"To request an early check-in"},"answer":"A","set":6,"graphic":null,"interaction":46},{"id":48,"stem":"Why is the room not yet available?","options":{"B":"Housekeeping hasn't finished cleaning the room.","D":"The hotel is fully booked tonight.","C":"Her credit card was declined.","A":"The room was double-booked by mistake."},"answer":"B","set":6,"graphic":null,"interaction":47},{"id":49,"stem":"What does the man offer the woman while she waits?","options":{"B":"Upgrade her to a suite at no charge","D":"Call her when a manager is available","C":"Store her luggage and let her use the pool","A":"Provide a full refund for one night"},"answer":"C","set":6,"graphic":null,"interaction":48},{"id":50,"stem":"Why is the man calling the leasing office?","options":{"A":"To request a refund for a canceled lease","B":"To ask about the location of the office","C":"To reschedule a viewing due to a work conflict","D":"To complain about the property manager"},"answer":"C","set":7,"graphic":null,"interaction":49},{"id":51,"stem":"What time does the man choose for his viewing?","options":{"A":"Monday at six in the evening","B":"Thursday at four in the afternoon","C":"Tomorrow evening as originally planned","D":"Friday at four in the afternoon"},"answer":"B","set":7,"graphic":null,"interaction":50},{"id":52,"stem":"What will the woman do on the morning of the viewing?","options":{"A":"Meet the man at his office","B":"Email an updated lease invoice","C":"Call to confirm the parking lot location","D":"Send a text reminder"},"answer":"D","set":7,"graphic":null,"interaction":51},{"id":53,"stem":"How many people signed up for the Effective Communication Skills session?","options":{"A":"Twenty","D":"Thirty","B":"Sixty","C":"Forty-five"},"answer":"C","set":8,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_2.png","interaction":52},{"id":54,"stem":"What does the man propose as a solution?","options":{"D":"Splitting the session into two smaller groups","C":"Canceling the oversubscribed session","B":"Moving the session to a larger, available room","A":"Asking half the registrants to attend online instead"},"answer":"B","set":8,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_2.png","interaction":53},{"id":55,"stem":"Look at the graphic. After the change described in the conversation, which two sessions will now be held in the same room?","options":{"A":"Leadership Fundamentals and Effective Communication Skills","B":"Effective Communication Skills and Certification Q&A Session","C":"Team-Building Workshop and Certification Q&A Session","D":"Leadership Fundamentals and Team-Building Workshop"},"answer":"B","set":8,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_2.png","interaction":54},{"id":56,"stem":"Why can the man only offer store credit instead of a refund?","options":{"C":"The return deadline has already passed.","D":"The items were purchased on final sale.","A":"The jackets show signs of visible wear.","B":"The receipt does not match the items."},"answer":"C","set":9,"graphic":null,"interaction":55},{"id":57,"stem":"What does the woman mention about her purchase?","options":{"C":"She lost her original receipt.","B":"She wants to exchange for a larger size.","A":"She bought the items online and picked them up in-store.","D":"She received the jackets as a gift."},"answer":"A","set":9,"graphic":null,"interaction":56},{"id":58,"stem":"What will the man do next?","options":{"D":"Process the store credit immediately","C":"Check with his supervisor about the policy","A":"Offer the woman a discount coupon","B":"Call the online customer service line"},"answer":"C","set":9,"graphic":null,"interaction":57},{"id":59,"stem":"What is the purpose of the woman's call?","options":{"C":"To reschedule a certification exam","D":"To request a refund for a course fee","B":"To dispute her exam results","A":"To register for a certification exam"},"answer":"A","set":10,"graphic":null,"interaction":58},{"id":60,"stem":"When does registration close?","options":{"D":"This Friday at midnight","B":"On the fifteenth","C":"At the end of the month","A":"Tomorrow morning"},"answer":"D","set":10,"graphic":null,"interaction":59},{"id":61,"stem":"What does the man offer to do for the woman?","options":{"C":"Waive the exam registration fee","B":"Register her using the record in the system","D":"Extend the registration deadline for her","A":"Mail her a printed completion certificate"},"answer":"B","set":10,"graphic":null,"interaction":60},{"id":62,"stem":"What are the speakers discussing?","options":{"B":"Rescheduling a final exam","C":"Repairing equipment in the auditorium","A":"Booking the auditorium for a club event","D":"Recruiting new members for a club"},"answer":"A","set":11,"graphic":null,"interaction":61},{"id":63,"stem":"What restriction does the woman mention about the auditorium?","options":{"B":"It cannot be booked more than a month in advance.","D":"Only faculty members may reserve it.","A":"It is closed for renovation next month.","C":"Weekday hours before 6:00 PM are reserved for academic classes."},"answer":"C","set":11,"graphic":null,"interaction":62},{"id":64,"stem":"What will the woman do after confirming the fourteenth is open?","options":{"D":"Reserve the auditorium and send a confirmation","B":"Charge a booking deposit","A":"Ask the man to submit a written proposal","C":"Transfer the request to another office"},"answer":"D","set":11,"graphic":null,"interaction":63},{"id":65,"stem":"Why did the woman bring her washing machine in?","options":{"A":"It would not turn on this morning.","B":"She needs the filter replaced.","C":"A warning light came on and the machine made a strange noise.","D":"The drum stopped spinning."},"answer":"C","set":12,"graphic":null,"interaction":64},{"id":66,"stem":"What does the man identify as the cause of the rattling sound?","options":{"A":"A worn-out drive belt","B":"A cracked drum","C":"A loose water hose","D":"A damaged control panel"},"answer":"A","set":12,"graphic":null,"interaction":65},{"id":67,"stem":"What time does the man say the machine will be ready?","options":{"A":"By two thirty","B":"By five o'clock","C":"By noon","D":"By three thirty"},"answer":"A","set":12,"graphic":null,"interaction":66},{"id":68,"stem":"What is the woman trying to do?","options":{"D":"Register for the next level of a certification track","C":"Cancel her current certification","B":"Request a refund for completed hours","A":"Transfer her hours to another program"},"answer":"D","set":13,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_3.png","interaction":67},{"id":69,"stem":"How many hours of training has the woman completed?","options":{"B":"15 hours","C":"35 hours","D":"25 hours","A":"60 hours"},"answer":"C","set":13,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_3.png","interaction":68},{"id":70,"stem":"Look at the graphic. Which level does the woman qualify for?","options":{"A":"Foundations","D":"Advanced","B":"Intermediate","C":"Master Class"},"answer":"B","set":13,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p3_g_test5_3.png","interaction":69}]},{"number":4,"title":"Short Talks","audio":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/audio/Part_4_Short_Talks.mp3","questions":[{"id":71,"stem":"Why is the speaker calling?","options":{"A":"To report that an order never arrived","B":"To schedule a catering order for the first time","C":"To dispute an unauthorized charge on a catering invoice","D":"To cancel a future catering order"},"answer":"C","set":1,"graphic":null,"interaction":70},{"id":72,"stem":"What does the speaker say about the food itself?","options":{"A":"It still needs to be redone.","B":"It arrived on time and tasted great.","C":"It was completed late.","D":"It was more expensive than quoted."},"answer":"B","set":1,"graphic":null,"interaction":71},{"id":73,"stem":"What does the speaker request?","options":{"A":"A written apology letter","B":"An explanation or a corrected invoice","C":"A full refund for all catering work","D":"Free catering for the next event"},"answer":"B","set":1,"graphic":null,"interaction":72},{"id":74,"stem":"Who most likely is the audience for this talk?","options":{"A":"Visitors on a facility tour","B":"Journalists attending a press conference","C":"New mill workers on their first day","D":"Shareholders attending an annual meeting"},"answer":"A","set":2,"graphic":null,"interaction":73},{"id":75,"stem":"Why can visitors only view the dyeing room through a window?","options":{"A":"The booth is reserved for authorized staff only.","B":"Chemical exposure limits restrict direct entry.","C":"Photography is strictly prohibited there.","D":"The area is currently under renovation."},"answer":"B","set":2,"graphic":null,"interaction":74},{"id":76,"stem":"According to the guide, what happened at the mill in 2019?","options":{"A":"The mill relocated to a new city.","B":"A new dyeing room was constructed.","C":"The mill produced its first organic cotton line.","D":"The weaving line became fully robotic."},"answer":"D","set":2,"graphic":null,"interaction":75},{"id":77,"stem":"What is the purpose of this phone message?","options":{"D":"A change in the clinic's operating hours","B":"The results of a recent lab test","C":"A reminder about an upcoming appointment","A":"An invitation to a health seminar"},"answer":"C","set":3,"graphic":null,"interaction":76},{"id":78,"stem":"What is the listener asked to bring to the appointment?","options":{"C":"A photo identification card","D":"A referral letter from another doctor","A":"Payment in cash only","B":"A list of current medications"},"answer":"B","set":3,"graphic":null,"interaction":77},{"id":79,"stem":"What should the listener do to reschedule the appointment?","options":{"C":"Call the front desk at least 24 hours in advance","A":"Reschedule the appointment online","B":"Send a text message to confirm attendance","D":"Speak directly with Dr. Osei"},"answer":"C","set":3,"graphic":null,"interaction":78},{"id":80,"stem":"What is the main purpose of this broadcast?","options":{"A":"To announce a new public transit route","B":"To update listeners on road construction and traffic delays","C":"To advertise a car dealership sale","D":"To report on a traffic accident"},"answer":"B","set":4,"graphic":null,"interaction":79},{"id":81,"stem":"What does the announcer recommend commuters do?","options":{"C":"Avoid downtown entirely until next month","D":"Take public transportation instead of driving","B":"Use the Elmwood Bypass instead of Route 9","A":"Delay their trips until after nine at night"},"answer":"B","set":4,"graphic":null,"interaction":80},{"id":82,"stem":"What positive update does the announcer mention about the westbound on-ramp?","options":{"D":"It will be widened to two lanes.","A":"It was permanently closed to reduce traffic.","B":"Tolls have been temporarily removed.","C":"It reopened ahead of schedule."},"answer":"C","set":4,"graphic":null,"interaction":81},{"id":83,"stem":"What topic will today's episode focus on?","options":{"C":"Designing an effective mentorship program","D":"Remote work productivity tools","A":"Salary negotiation strategies","B":"Recruiting techniques for startups"},"answer":"C","set":5,"graphic":null,"interaction":82},{"id":84,"stem":"What did the guest accomplish at her previous company?","options":{"C":"She launched the company's first podcast.","D":"She doubled mentorship program participation within a year.","B":"She reduced employee turnover to zero.","A":"She wrote a bestselling book on leadership."},"answer":"D","set":5,"graphic":null,"interaction":83},{"id":85,"stem":"What does the host ask listeners to do?","options":{"C":"Subscribe to a newsletter","A":"Submit questions for a future episode","D":"Leave a rating on their podcast app","B":"Share the episode on social media"},"answer":"D","set":5,"graphic":null,"interaction":84},{"id":86,"stem":"What service is being advertised?","options":{"A":"A translation agency","B":"A study-abroad consultancy","C":"A one-on-one language school","D":"An online grammar course"},"answer":"C","set":6,"graphic":null,"interaction":85},{"id":87,"stem":"What is included in the limited-time offer?","options":{"A":"A discount on the final exam fee","B":"Free pickup and drop-off service","C":"A free set of textbooks","D":"Two free lessons with a ten-lesson package"},"answer":"D","set":6,"graphic":null,"interaction":86},{"id":88,"stem":"How can listeners reserve a spot?","options":{"A":"By attending an open house event","B":"By visiting the academy in person only","C":"By mailing in a registration form","D":"By visiting the website or calling a phone number"},"answer":"D","set":6,"graphic":null,"interaction":87},{"id":89,"stem":"What is being announced?","options":{"C":"A change in the lunch menu","A":"A temporary office closure due to weather","B":"An upcoming company-wide training day","D":"A new employee dress code policy"},"answer":"B","set":7,"graphic":null,"interaction":88},{"id":90,"stem":"Where should employees report at eight thirty?","options":{"D":"Their usual desks","B":"The parking garage","C":"The human resources office","A":"The third-floor conference center"},"answer":"A","set":7,"graphic":null,"interaction":89},{"id":91,"stem":"What are employees asked to bring?","options":{"A":"Their laptop","B":"Their own lunch","D":"A printed copy of the agenda","C":"A signed attendance form"},"answer":"A","set":7,"graphic":null,"interaction":90},{"id":92,"stem":"What is the purpose of the call?","options":{"A":"To announce a merger with a competitor","D":"To present quarterly earnings figures to investors","B":"To recall a defective product line","C":"To announce a change in company leadership"},"answer":"D","set":8,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_1.png","interaction":91},{"id":93,"stem":"Look at the graphic. According to the speaker, what is the dollar figure for the category that grew the fastest this quarter?","options":{"A":"$58.2 million","B":"14.7%","C":"$6.1 million","D":"$7.8 million"},"answer":"C","set":8,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_1.png","interaction":92},{"id":94,"stem":"What does the speaker attribute the R&D increase to?","options":{"D":"A government subsidy program","B":"The relocation of the research facility","A":"A newly signed licensing agreement","C":"Accelerated investment in a battery housing project"},"answer":"C","set":8,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_1.png","interaction":93},{"id":95,"stem":"What is the announcement primarily about?","options":{"A":"A last-minute change to an exhibit's location","B":"A change to the expo's opening hours","C":"A cancellation of the entire trade show","D":"New parking regulations for the venue"},"answer":"A","set":9,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_2.png","interaction":94},{"id":96,"stem":"Look at the graphic. Which exhibitor's demonstration has been moved to the main stage?","options":{"C":"Velocity Motors","A":"NextGen Driving Academy","B":"TerraGrip Tire Co.","D":"AutoStream Software"},"answer":"A","set":9,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_2.png","interaction":95},{"id":97,"stem":"What does the speaker remind attendees to do before visiting the booths?","options":{"D":"Pick up a printed show guide","C":"Watch a safety briefing video","A":"Scan their badge at the registration desk","B":"Exchange their ticket for a wristband"},"answer":"A","set":9,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_2.png","interaction":96},{"id":98,"stem":"What is the purpose of the presentation?","options":{"C":"To explain the company's dress code","A":"To introduce the executive leadership team","D":"To describe the building's fire evacuation plan","B":"To explain how the internal certification tier system works"},"answer":"B","set":10,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_3.png","interaction":97},{"id":99,"stem":"Look at the graphic. Which tier requires 25 hours of training?","options":{"A":"Tier 2 – Certified","C":"Tier 1 – Associate","D":"Tier 3 – Senior Certified","B":"Tier 4 – Master Certified"},"answer":"A","set":10,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_3.png","interaction":98},{"id":100,"stem":"What must new hires complete within their first month?","options":{"B":"A performance review with their manager","C":"Their Tier 1 training hours and a short assessment","A":"A rotation through every department","D":"An in-person interview with the CEO"},"answer":"C","set":10,"graphic":"https://pub-87479db145ff4b668aa861c19c139295.r2.dev/toeic/test5/images/p4_g_test5_3.png","interaction":99}]}]}</script>
+<script>
+(()=>{'use strict';
+const DATA=JSON.parse(document.getElementById('testData').textContent);
+const byPart=Object.fromEntries(DATA.parts.map(part=>[part.number,part]));
+const firstPart=DATA.parts[0].number;
+const state={active:firstPart,answers:{},parts:{}};
+const STORAGE_KEY=`toeic_practice_test_${DATA.test}_v1`;
+
+const directions={
+  1:'Choose the statement that best describes each photograph. The statements are heard only.',
+  2:'Choose the best response to each spoken question. The question and responses are heard only.',
+  3:'Answer three printed questions about each conversation. Choose the best answer.',
+  4:'Answer three printed questions about each short talk. Choose the best answer.'
+};
+
+const tabs=document.getElementById('partTabs'),host=document.getElementById('parts'),summary=document.querySelector('[data-completion-summary]'),announce=document.getElementById('announcer');
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+function choice(q,letter,text){
+  const id=`q${q.id}_${letter}`;
+  return `<label class="choice" for="${id}"><input id="${id}" name="q${q.id}" type="radio" value="${letter}"><span><b>${letter}</b>${text?`. ${esc(text)}`:''}</span></label>`;
+}
+
+function question(q,part){
+  let body=part<3?`<div class="qnum" aria-label="Question ${q.id}"><b>${q.id}.</b></div>`:'';
+  if(part===1)body+=`<img class="photo" src="${q.image}" alt="Photograph for question ${q.id}" loading="lazy">`;
+  if(part>=3)body=`<h3>${q.id}. ${esc(q.stem)}</h3>`;
+  const letters=part===2?['A','B','C']:['A','B','C','D'];
+  body+=`<div class="choices">${letters.map(x=>choice(q,x,q.options?.[x])).join('')}</div><p class="review-note" data-review></p>`;
+  return `<article class="question" id="question-${q.id}" tabindex="-1" data-question="${q.id}">${body}</article>`;
+}
+
+function renderPart(part){
+  let content='';
+  if(part.number<3){
+    content=part.questions.map(q=>question(q,part.number)).join('');
+  }else{
+    const groups=new Map();
+    part.questions.forEach(q=>{
+      if(!groups.has(q.set))groups.set(q.set,[]);
+      groups.get(q.set).push(q);
+    });
+    for(const [set,qs] of groups){
+      const graphic=qs[0].graphic?`<img class="graphic" src="${qs[0].graphic}" alt="Reference graphic for questions ${qs[0].id} through ${qs.at(-1).id}" loading="lazy">`:'';
+      content+=`<div class="set"><div class="set-label">Questions ${qs[0].id}–${qs.at(-1).id}</div>${graphic}${qs.map(q=>question(q,part.number)).join('')}</div>`;
+    }
+  }
+  return `<section class="panel${part.number===firstPart?' active':''}" data-part="${part.number}" aria-labelledby="part-title-${part.number}">
+    <div class="part-head">
+      <h2 id="part-title-${part.number}">Part ${part.number}: ${esc(part.title)}</h2>
+      <p class="directions">${directions[part.number]}</p>
+      <div class="player">
+        <button class="start" data-start-part="${part.number}">Play</button>
+        <audio class="practice-audio" data-audio-part="${part.number}" controls controlsList="nodownload" preload="metadata">
+          <source src="${part.audio}" type="audio/mpeg">
+        </audio>
+        <span class="audio-state">Ready</span>
+      </div>
+    </div>
+    <div class="questions">${content}</div>
+    <div class="submit-row">
+      <span data-completion>0 of ${part.questions.length} answered</span>
+      <button class="submit" data-submit-part="${part.number}">Submit Part ${part.number}</button>
+    </div>
+    <div class="result" data-result-part="${part.number}" role="status"></div>
+  </section>`;
+}
+
+DATA.parts.forEach(part=>{
+  state.parts[part.number]={submitted:false,score:0};
+  tabs.insertAdjacentHTML('beforeend',`<button class="part-tab${part.number===firstPart?' active':''}" data-tab="${part.number}"><strong>Part ${part.number}</strong><span>${esc(part.title)} · ${part.questions.length} 題</span></button>`);
+  host.insertAdjacentHTML('beforeend',renderPart(part));
+});
+
+function showPart(n,scrollTop=true){
+  if(!byPart[n])return;
+  document.querySelectorAll('audio').forEach(audio=>{if(+audio.dataset.audioPart!==n)audio.pause()});
+  state.active=n;
+  document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',+x.dataset.tab===n));
+  document.querySelectorAll('[data-part]').forEach(x=>x.classList.toggle('active',+x.dataset.part===n));
+  if(scrollTop)scrollTo({top:0,behavior:'smooth'});
+}
+
+tabs.addEventListener('click',e=>{
+  const b=e.target.closest('[data-tab]');
+  if(b)showPart(+b.dataset.tab);
+});
+
+summary.addEventListener('click',e=>{
+  const button=e.target.closest('[data-review-question]');
+  if(!button)return;
+  const q=+button.dataset.reviewQuestion,part=+button.dataset.reviewPart,card=document.querySelector(`[data-question="${q}"]`);
+  showPart(part,false);
+  if(card){
+    card.scrollIntoView({behavior:'smooth',block:'center'});
+    setTimeout(()=>card.focus({preventScroll:true}),250);
+  }
+});
+
+function saveProgress(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify({
+      answers: state.answers,
+      submittedParts: Object.entries(state.parts).filter(([,p])=>p.submitted).map(([n])=>+n),
+      activePart: state.active
+    }));
+  }catch(e){}
+}
+
+host.addEventListener('change',e=>{
+  if(!e.target.matches('input[type=radio]'))return;
+  state.answers[e.target.name]=e.target.value;
+  const panel=e.target.closest('[data-part]'),part=byPart[+panel.dataset.part],count=part.questions.filter(q=>state.answers['q'+q.id]).length;
+  panel.querySelector('[data-completion]').textContent=`${count} of ${part.questions.length} answered`;
+  saveProgress();
+});
+
+host.addEventListener('click',e=>{
+  const start=e.target.closest('[data-start-part]');
+  if(start)startAudio(+start.dataset.startPart);
+  const submit=e.target.closest('[data-submit-part]');
+  if(submit)submitPart(+submit.dataset.submitPart);
+});
+
+function startAudio(n){
+  const panel=document.querySelector(`[data-part="${n}"]`),audio=panel.querySelector('audio');
+  if(audio.paused)audio.play().catch(()=>panel.querySelector('.audio-state').textContent='Could not play — try the audio controls');
+  else audio.pause();
+}
+
+DATA.parts.forEach(part=>{
+  const panel=document.querySelector(`[data-part="${part.number}"]`),audio=panel.querySelector('audio'),button=panel.querySelector('[data-start-part]'),status=panel.querySelector('.audio-state');
+  audio.addEventListener('play',()=>{button.textContent='Pause';status.textContent='Playing'});
+  audio.addEventListener('pause',()=>{button.textContent='Play';status.textContent=audio.ended?'Complete':'Paused'});
+  audio.addEventListener('ended',()=>{button.textContent='Replay';status.textContent='Complete';announce.textContent=`Part ${part.number} audio complete.`});
+});
+
+function currentPct(){
+  const total=DATA.parts.reduce((sum,part)=>sum+part.questions.length,0),score=Object.values(state.parts).reduce((sum,part)=>sum+part.score,0);
+  return total?Math.round(score/total*100):0;
+}
+
+function submitPart(n){
+  const ps=state.parts[n],part=byPart[n];
+  if(!part||ps.submitted)return;
+  const missing=part.questions.filter(q=>!state.answers['q'+q.id]).length;
+  if(missing&&!confirm(`尚有 ${missing} 題未作答。確定要現在提交 Part ${n} 嗎？`))return;
+  gradePart(n,true);
+  saveProgress();
+}
+
+function renderCompletion(focus=false){
+  const complete=DATA.parts.every(part=>state.parts[part.number].submitted);
+  if(!complete){summary.hidden=true;return}
+  const total=DATA.parts.reduce((sum,part)=>sum+part.questions.length,0),
+        score=Object.values(state.parts).reduce((sum,part)=>sum+part.score,0),
+        pct=total?Math.round(score/total*100):0,
+        missed=DATA.parts.flatMap(part=>part.questions.filter(q=>state.answers['q'+q.id]!==q.answer).map(q=>({q,part:part.number,response:state.answers['q'+q.id]||''})));
+  summary.querySelector('[data-final-score]').textContent=score;
+  summary.querySelector('[data-final-total]').textContent=total;
+  summary.querySelector('[data-final-percent]').textContent=pct+'%';
+  summary.querySelector('[data-final-missed]').textContent=missed.length;
+  summary.querySelector('[data-part-breakdown]').innerHTML=DATA.parts.map(part=>`<div class="part-score"><b>Part ${part.number} (${part.title})</b><span><strong data-part-score="${part.number}">${state.parts[part.number].score}</strong> / ${part.questions.length} 正確</span></div>`).join('');
+  summary.querySelector('[data-missed-list]').innerHTML=missed.length?missed.map(item=>`<article class="missed-row" data-missed-question="${item.q.id}"><span><b>第 ${item.q.id} 題</b><small class="missed-label">Part ${item.part}</small></span><span><small class="missed-label">學生作答</small><b data-student-answer>${item.response||'未作答'}</b></span><span><small class="missed-label">正確解答</small><b data-correct-answer>${item.q.answer}</b></span><button class="review-jump" type="button" data-review-question="${item.q.id}" data-review-part="${item.part}">檢視題目</button></article>`).join(''):'<p class="perfect-note">全對！恭喜在本次模擬測驗獲得滿分！</p>';
+  summary.hidden=false;
+  if(focus){summary.scrollIntoView({behavior:'smooth',block:'start'});setTimeout(()=>summary.focus({preventScroll:true}),250)}
+}
+
+function gradePart(n,report){
+  const ps=state.parts[n],part=byPart[n],panel=document.querySelector(`[data-part="${n}"]`);
+  let score=0;
+  part.questions.forEach(q=>{
+    const picked=state.answers['q'+q.id],ok=picked===q.answer;
+    if(ok)score++;
+    const card=panel.querySelector(`[data-question="${q.id}"]`),note=card.querySelector('[data-review]');
+    card.classList.add(ok?'review-correct':'review-wrong');
+    note.className=`review-note ${ok?'good':'bad'}`;
+    note.textContent=ok?`正確解答：${q.answer}`:`${picked?`您的答案：${picked}。`:'未作答。'} 正確解答：${q.answer}`;
+    card.querySelectorAll('input').forEach(i=>i.disabled=true);
+  });
+  ps.score=score;
+  ps.submitted=true;
+  panel.classList.add('submitted');
+  panel.querySelector('[data-submit-part]').disabled=true;
+  const cumulative=Object.values(state.parts).reduce((a,p)=>a+p.score,0),
+        total=DATA.parts.reduce((sum,p)=>sum+p.questions.length,0),
+        submittedCount=Object.values(state.parts).filter(p=>p.submitted).length,
+        next=DATA.parts.find(p=>!state.parts[p.number].submitted),
+        isComplete=!next,
+        result=panel.querySelector('[data-result-part]');
+  result.innerHTML=`<strong>Part ${n} 得分：${score} / ${part.questions.length}</strong><br>${isComplete?`全卷完成！總分：${cumulative} / ${total} (${currentPct()}%)`:`已完成 ${submittedCount} / ${DATA.parts.length} 個部分。提交所有 Part 後將顯示全卷成果。`}`;
+  result.classList.add('show');
+  if(next){
+    result.insertAdjacentHTML('beforeend',`<br><button class="start" style="margin-top:.8rem" data-next="${next.number}">前往 Part ${next.number}</button>`);
+    result.querySelector('[data-next]').addEventListener('click',()=>showPart(next.number));
+  }else{
+    result.insertAdjacentHTML('beforeend','<br><b>測驗完成！請往下查看錯題檢討。</b>');
+  }
+  renderCompletion(isComplete&&report);
+}
+
+function loadSaved(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(!saved)return;
+    if(saved.answers){
+      state.answers=saved.answers;
+      for(const [name,val] of Object.entries(saved.answers)){
+        const input=document.querySelector(`input[name="${name}"][value="${val}"]`);
+        if(input)input.checked=true;
+      }
+    }
+    if(saved.submittedParts&&Array.isArray(saved.submittedParts)){
+      for(const p of saved.submittedParts){
+        if(state.parts[p])gradePart(p,false);
+      }
+    }
+    DATA.parts.forEach(part=>{
+      const panel=document.querySelector(`[data-part="${part.number}"]`),
+            count=part.questions.filter(q=>state.answers['q'+q.id]).length;
+      panel.querySelector('[data-completion]').textContent=`${count} of ${part.questions.length} answered`;
+    });
+    if(saved.activePart&&byPart[saved.activePart])showPart(saved.activePart,false);
+  }catch(e){}
+}
+
+loadSaved();
+})();
+</script>
+</body>
+</html>
