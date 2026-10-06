@@ -20,8 +20,8 @@ THEMES = {
 def fmt_md(text):
     if not text:
         return ""
-    # strip accidental trailing Part 7 headers from Part 6 explanations
-    text = re.sub(r'\s*\*\*第三部分[^\*]*\*\*\s*$', '', text.strip())
+    # strip accidental trailing part headers from explanations
+    text = re.sub(r'\s*\*\*(第二部分|第三部分)[^\*]*\*\*\s*$', '', text.strip())
     t = html.escape(text)
     t = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', t)
     t = t.replace('\\n', '<br>').replace('\n', '<br>')
