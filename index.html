@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>多益新制聽力模擬測驗題庫 | TOEIC Listening Practice</title>
+<title>多益新制線上模擬測驗平台 (聽力 10 回 + 閱讀 10 回) | TOEIC Practice Platform</title>
 <style>
 :root{
   --brand:#1a365d;
@@ -55,7 +55,7 @@ body{
   font-size:clamp(1rem,2vw,1.18rem);
   margin:0 auto;
   opacity:.9;
-  max-width:640px;
+  max-width:680px;
 }
 .container{
   max-width:1160px;
@@ -68,7 +68,7 @@ body{
   border-left:5px solid var(--accent);
   border-radius:12px;
   padding:1.2rem 1.5rem;
-  margin-bottom:2.5rem;
+  margin-bottom:2rem;
   box-shadow:var(--shadow);
   display:flex;
   gap:1.5rem;
@@ -83,6 +83,40 @@ body{
   color:var(--text);
 }
 .info-item strong{color:var(--brand)}
+
+/* Tab Filter Control */
+.filter-wrapper{
+  display:flex;
+  justify-content:center;
+  margin-bottom:2.2rem;
+}
+.filter-tabs{
+  display:inline-flex;
+  background:#edf2f7;
+  padding:.35rem;
+  border-radius:999px;
+  gap:.35rem;
+}
+.filter-tab{
+  border:0;
+  background:transparent;
+  color:#4a5568;
+  font-weight:700;
+  padding:.65rem 1.45rem;
+  border-radius:999px;
+  cursor:pointer;
+  font-size:.95rem;
+  transition:all .2s;
+}
+.filter-tab:hover:not(.active){
+  color:var(--brand);
+}
+.filter-tab.active{
+  background:var(--brand);
+  color:#fff;
+  box-shadow:0 4px 14px rgba(26,54,93,.25);
+}
+
 .grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(330px,1fr));
@@ -103,7 +137,6 @@ body{
 .card:hover{
   transform:translateY(-4px);
   box-shadow:var(--shadow-hover);
-  border-color:var(--accent);
 }
 .card-top{
   display:flex;
@@ -114,12 +147,24 @@ body{
 .test-num{
   font-size:1.4rem;
   font-weight:800;
-  color:var(--brand);
 }
+.test-tag-row{
+  display:flex;
+  gap:.4rem;
+  align-items:center;
+}
+.type-tag{
+  font-size:.78rem;
+  font-weight:800;
+  padding:.22rem .6rem;
+  border-radius:999px;
+}
+.type-listening{background:#ebf8ff;color:#2b6cb0}
+.type-reading{background:#f0fff4;color:#276749}
 .test-tag{
   font-size:.78rem;
   font-weight:700;
-  padding:.25rem .65rem;
+  padding:.22rem .6rem;
   border-radius:999px;
   background:#edf2f7;
   color:#4a5568;
@@ -145,20 +190,40 @@ body{
   padding:.4rem .6rem;
   color:#4a5568;
 }
-.btn-start{
+.card-actions{
   margin-top:auto;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:.6rem;
+}
+.btn-start{
   display:block;
   text-align:center;
-  background:var(--brand);
   color:#fff;
   text-decoration:none;
   font-weight:700;
-  padding:.85rem;
+  padding:.85rem .95rem;
   border-radius:10px;
-  transition:background .15s,transform .15s;
+  font-size:.92rem;
+  transition:opacity .15s,transform .15s;
 }
-.btn-start:hover{
-  background:var(--accent);
+.btn-start:hover{opacity:.92}
+.btn-sub{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:#fff;
+  text-decoration:none;
+  font-weight:700;
+  padding:.85rem .9rem;
+  border-radius:10px;
+  font-size:.85rem;
+  border:1px solid;
+  transition:background .15s;
+}
+.btn-sub:hover{
+  background:#f7fafc;
 }
 footer{
   text-align:center;
@@ -172,26 +237,37 @@ footer{
 <body>
 <div class="hero">
   <div class="hero-inner">
-    <div class="badge">TOEIC 2026 最新制</div>
-    <h1>新制多益聽力線上模擬測驗</h1>
-    <p>提供完整 10 回高品質聽力真題模擬練習。免登入、即點即練，支援即時評分與完整錯題檢討。</p>
+    <div class="badge">TOEIC 2026 最新制全真題庫</div>
+    <h1>新制多益線上模擬測驗平台</h1>
+    <p>提供完整 10 回聽力真題（Part 1–4）與閱讀題庫（Part 5–6）。免安裝登入、即點即測，支援即時自動評分與錯題解析。</p>
   </div>
 </div>
 
 <main class="container">
   <div class="info-banner">
-    <div class="info-item">🎧 <strong>建議配戴耳機</strong> 練習最佳音質</div>
-    <div class="info-item">⏱ <strong>每回時間</strong> 約 45 分鐘（100 題）</div>
-    <div class="info-item">📊 <strong>交卷即評分</strong> 各 Part 正確率與錯題對照</div>
-    <div class="info-item">💾 <strong>進度自動保存</strong> 刷新頁面不遺失</div>
+    <div class="info-item">🎧 <strong>聽力 100 題</strong> 託管於 Cloudflare R2</div>
+    <div class="info-item">📖 <strong>閱讀 46 題</strong> 單句填空 + 短文填空</div>
+    <div class="info-item">📊 <strong>交卷即評分</strong> 正確率統計與錯題檢視</div>
+    <div class="info-item">💾 <strong>自動保存進度</strong> 刷新頁面紀錄不遺失</div>
   </div>
 
-  <div class="grid">
-    
-    <div class="card" style="border-top: 4px solid #143a5a;">
+  <div class="filter-wrapper">
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-target="all">📚 全部測驗 (All · 20 回)</button>
+      <button class="filter-tab" data-target="listening">🎧 聽力測驗 (Part 1–4 · 10 回)</button>
+      <button class="filter-tab" data-target="reading">📖 閱讀測驗 (Part 5–6 · 10 回)</button>
+    </div>
+  </div>
+
+  <div class="grid" id="testGrid">
+
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #143a5a;">
       <div class="card-top">
         <div class="test-num" style="color: #143a5a;">Mock Test 1</div>
-        <div class="test-tag">Executive Blue</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Executive Blue</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -203,13 +279,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test1.html" class="btn-start" style="background: #143a5a;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test1.html" class="btn-start" style="background: #143a5a;">🎧 開始聽力測驗</a>
+        <a href="reading1.html" class="btn-sub" style="color: #143a5a; border-color: #143a5a;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #174b43;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #174b43;">
       <div class="card-top">
         <div class="test-num" style="color: #174b43;">Mock Test 2</div>
-        <div class="test-tag">Emerald Finance</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Emerald Finance</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -221,13 +303,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test2.html" class="btn-start" style="background: #174b43;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test2.html" class="btn-start" style="background: #174b43;">🎧 開始聽力測驗</a>
+        <a href="reading2.html" class="btn-sub" style="color: #174b43; border-color: #174b43;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #612d3d;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #612d3d;">
       <div class="card-top">
         <div class="test-num" style="color: #612d3d;">Mock Test 3</div>
-        <div class="test-tag">Burgundy Legal</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Burgundy Legal</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -239,13 +327,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test3.html" class="btn-start" style="background: #612d3d;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test3.html" class="btn-start" style="background: #612d3d;">🎧 開始聽力測驗</a>
+        <a href="reading3.html" class="btn-sub" style="color: #612d3d; border-color: #612d3d;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #65402c;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #65402c;">
       <div class="card-top">
         <div class="test-num" style="color: #65402c;">Mock Test 4</div>
-        <div class="test-tag">Copper Logistics</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Copper Logistics</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -257,13 +351,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test4.html" class="btn-start" style="background: #65402c;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test4.html" class="btn-start" style="background: #65402c;">🎧 開始聽力測驗</a>
+        <a href="reading4.html" class="btn-sub" style="color: #65402c; border-color: #65402c;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #303a70;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #303a70;">
       <div class="card-top">
         <div class="test-num" style="color: #303a70;">Mock Test 5</div>
-        <div class="test-tag">Indigo Technology</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Indigo Technology</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -275,13 +375,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test5.html" class="btn-start" style="background: #303a70;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test5.html" class="btn-start" style="background: #303a70;">🎧 開始聽力測驗</a>
+        <a href="reading5.html" class="btn-sub" style="color: #303a70; border-color: #303a70;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #15515a;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #15515a;">
       <div class="card-top">
         <div class="test-num" style="color: #15515a;">Mock Test 6</div>
-        <div class="test-tag">Teal Healthcare</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Teal Healthcare</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -293,13 +399,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test6.html" class="btn-start" style="background: #15515a;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test6.html" class="btn-start" style="background: #15515a;">🎧 開始聽力測驗</a>
+        <a href="reading6.html" class="btn-sub" style="color: #15515a; border-color: #15515a;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #334657;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #334657;">
       <div class="card-top">
         <div class="test-num" style="color: #334657;">Mock Test 7</div>
-        <div class="test-tag">Slate Aviation</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Slate Aviation</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -311,13 +423,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test7.html" class="btn-start" style="background: #334657;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test7.html" class="btn-start" style="background: #334657;">🎧 開始聽力測驗</a>
+        <a href="reading7.html" class="btn-sub" style="color: #334657; border-color: #334657;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #55355f;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #55355f;">
       <div class="card-top">
         <div class="test-num" style="color: #55355f;">Mock Test 8</div>
-        <div class="test-tag">Plum Hospitality</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Plum Hospitality</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -329,13 +447,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test8.html" class="btn-start" style="background: #55355f;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test8.html" class="btn-start" style="background: #55355f;">🎧 開始聽力測驗</a>
+        <a href="reading8.html" class="btn-sub" style="color: #55355f; border-color: #55355f;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #203f72;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #203f72;">
       <div class="card-top">
         <div class="test-num" style="color: #203f72;">Mock Test 9</div>
-        <div class="test-tag">Cobalt Consulting</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Cobalt Consulting</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -347,13 +471,19 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test9.html" class="btn-start" style="background: #203f72;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test9.html" class="btn-start" style="background: #203f72;">🎧 開始聽力測驗</a>
+        <a href="reading9.html" class="btn-sub" style="color: #203f72; border-color: #203f72;">📖 閱讀測驗</a>
+      </div>
     </div>
 
-    <div class="card" style="border-top: 4px solid #244c3a;">
+    <div class="card card-listening" data-cat="listening" style="border-top: 4px solid #244c3a;">
       <div class="card-top">
         <div class="test-num" style="color: #244c3a;">Mock Test 10</div>
-        <div class="test-tag">Forest Sustainability</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-listening">🎧 聽力</span>
+          <span class="test-tag">Forest Sustainability</span>
+        </div>
       </div>
       <div class="card-meta">
         <span>📝 100 題完整測驗</span>
@@ -365,13 +495,285 @@ footer{
         <div class="pill">Part 3: 簡短對話 (39 題)</div>
         <div class="pill">Part 4: 簡短獨白 (30 題)</div>
       </div>
-      <a href="test10.html" class="btn-start" style="background: #244c3a;">開始測驗 (Start Test)</a>
+      <div class="card-actions">
+        <a href="test10.html" class="btn-start" style="background: #244c3a;">🎧 開始聽力測驗</a>
+        <a href="reading10.html" class="btn-sub" style="color: #244c3a; border-color: #244c3a;">📖 閱讀測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #143a5a;">
+      <div class="card-top">
+        <div class="test-num" style="color: #143a5a;">Mock Test 1</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Executive Blue</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading1.html" class="btn-start" style="background: #143a5a;">📖 開始閱讀測驗</a>
+        <a href="test1.html" class="btn-sub" style="color: #143a5a; border-color: #143a5a;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #174b43;">
+      <div class="card-top">
+        <div class="test-num" style="color: #174b43;">Mock Test 2</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Emerald Finance</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading2.html" class="btn-start" style="background: #174b43;">📖 開始閱讀測驗</a>
+        <a href="test2.html" class="btn-sub" style="color: #174b43; border-color: #174b43;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #612d3d;">
+      <div class="card-top">
+        <div class="test-num" style="color: #612d3d;">Mock Test 3</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Burgundy Legal</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading3.html" class="btn-start" style="background: #612d3d;">📖 開始閱讀測驗</a>
+        <a href="test3.html" class="btn-sub" style="color: #612d3d; border-color: #612d3d;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #65402c;">
+      <div class="card-top">
+        <div class="test-num" style="color: #65402c;">Mock Test 4</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Copper Logistics</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading4.html" class="btn-start" style="background: #65402c;">📖 開始閱讀測驗</a>
+        <a href="test4.html" class="btn-sub" style="color: #65402c; border-color: #65402c;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #303a70;">
+      <div class="card-top">
+        <div class="test-num" style="color: #303a70;">Mock Test 5</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Indigo Technology</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading5.html" class="btn-start" style="background: #303a70;">📖 開始閱讀測驗</a>
+        <a href="test5.html" class="btn-sub" style="color: #303a70; border-color: #303a70;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #15515a;">
+      <div class="card-top">
+        <div class="test-num" style="color: #15515a;">Mock Test 6</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Teal Healthcare</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading6.html" class="btn-start" style="background: #15515a;">📖 開始閱讀測驗</a>
+        <a href="test6.html" class="btn-sub" style="color: #15515a; border-color: #15515a;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #334657;">
+      <div class="card-top">
+        <div class="test-num" style="color: #334657;">Mock Test 7</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Slate Aviation</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading7.html" class="btn-start" style="background: #334657;">📖 開始閱讀測驗</a>
+        <a href="test7.html" class="btn-sub" style="color: #334657; border-color: #334657;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #55355f;">
+      <div class="card-top">
+        <div class="test-num" style="color: #55355f;">Mock Test 8</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Plum Hospitality</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading8.html" class="btn-start" style="background: #55355f;">📖 開始閱讀測驗</a>
+        <a href="test8.html" class="btn-sub" style="color: #55355f; border-color: #55355f;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #203f72;">
+      <div class="card-top">
+        <div class="test-num" style="color: #203f72;">Mock Test 9</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Cobalt Consulting</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading9.html" class="btn-start" style="background: #203f72;">📖 開始閱讀測驗</a>
+        <a href="test9.html" class="btn-sub" style="color: #203f72; border-color: #203f72;">🎧 聽力測驗</a>
+      </div>
+    </div>
+
+    <div class="card card-reading" data-cat="reading" style="border-top: 4px solid #244c3a;">
+      <div class="card-top">
+        <div class="test-num" style="color: #244c3a;">Mock Test 10</div>
+        <div class="test-tag-row">
+          <span class="type-tag type-reading">📖 閱讀</span>
+          <span class="test-tag">Forest Sustainability</span>
+        </div>
+      </div>
+      <div class="card-meta">
+        <span>📝 46 題 (Q101–Q146)</span>
+        <span>⏱ 建議 20 分鐘</span>
+      </div>
+      <div class="parts-pills">
+        <div class="pill">Part 5: 單句填空 (30 題)</div>
+        <div class="pill">Part 6: 短文填空 (16 題)</div>
+        <div class="pill">考點：詞性/時態/介系詞</div>
+        <div class="pill">詳解：完整文法與中譯</div>
+      </div>
+      <div class="card-actions">
+        <a href="reading10.html" class="btn-start" style="background: #244c3a;">📖 開始閱讀測驗</a>
+        <a href="test10.html" class="btn-sub" style="color: #244c3a; border-color: #244c3a;">🎧 聽力測驗</a>
+      </div>
     </div>
   </div>
 </main>
 
 <footer>
-  <p>TOEIC® Listening Practice Portal &middot; 專為家教教學與個人模考設計</p>
+  <p>TOEIC® Practice Portal &middot; 聽力與閱讀全真模擬測驗題庫</p>
 </footer>
+
+<script>
+(()=>{
+  const tabs = document.querySelectorAll('.filter-tab');
+  const cards = document.querySelectorAll('.card');
+  const STORE_KEY = 'toeic_home_filter_v1';
+
+  function applyFilter(target){
+    tabs.forEach(t => t.classList.toggle('active', t.dataset.target === target));
+    cards.forEach(card => {
+      if (target === 'all') {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = (card.dataset.cat === target) ? 'flex' : 'none';
+      }
+    });
+    try { localStorage.setItem(STORE_KEY, target); } catch(e) {}
+  }
+
+  tabs.forEach(t => {
+    t.addEventListener('click', () => applyFilter(t.dataset.target));
+  });
+
+  const saved = localStorage.getItem(STORE_KEY);
+  if (saved && ['all', 'listening', 'reading'].includes(saved)) {
+    applyFilter(saved);
+  }
+})();
+</script>
 </body>
 </html>

@@ -10,6 +10,8 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth;min-width:0}body{margin:0;min-width:0;background:radial-gradient(circle at 92% 0,var(--pale) 0,transparent 28rem),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;line-height:1.55;overflow-x:hidden}
 button,input,label{font:inherit}button{cursor:pointer;touch-action:manipulation}
 .top{position:relative;overflow:hidden;background:linear-gradient(118deg,var(--brand),var(--accent));color:#fff;padding:1.25rem max(1rem,calc((100% - 1180px)/2));box-shadow:0 3px 14px #0003}
+.switch-mode-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .85rem;border-radius:999px;background:rgba(255,255,255,0.2);color:#fff;text-decoration:none;font-size:.82rem;font-weight:700;border:1px solid rgba(255,255,255,0.4);transition:all .15s}
+.switch-mode-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-1px)}
 .top:after{content:"";position:absolute;width:18rem;height:18rem;border:4rem solid #fff1;border-radius:50%;right:-6rem;top:-10rem}
 .top-inner{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:1rem}
 .top-left{display:flex;flex-direction:column;gap:.3rem}
@@ -119,7 +121,7 @@ button,input,label{font:inherit}button{cursor:pointer;touch-action:manipulation}
       <h1>多益聽力模擬測驗 Test 9</h1>
       <p>100 題 · 全四部分完整練習 · 支援暫停與即時錯題解析</p>
     </div>
-    <span class="theme-badge">Cobalt Consulting</span>
+    <div style="display:flex;align-items:center;gap:.65rem;flex-wrap:wrap"><a href="reading9.html" class="switch-mode-btn">📖 切換至閱讀測驗 Test 9</a><span class="theme-badge">Cobalt Consulting</span></div>
   </div>
 </header>
 <main class="shell" data-test-id="toeic-listening-test">

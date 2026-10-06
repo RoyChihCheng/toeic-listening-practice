@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>多益閱讀模擬測驗 Test 6 | TOEIC Reading Practice</title>
+<style>
+:root{
+  --brand:#15515a;
+  --accent:#168997;
+  --pale:#e9f6f7;
+  --line:#d5e5ec;
+  --bg:#f3f7f9;
+  --focus:#f2b544;
+  --ink:#172433;
+  --muted:#617080;
+  --good:#13734a;
+  --bad:#b73832;
+  --paper:#fff;
+  --shadow:0 12px 30px rgba(25,42,58,.09);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;min-width:0}
+body{margin:0;min-width:0;background:radial-gradient(circle at 92% 0,var(--pale) 0,transparent 28rem),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC",sans-serif;line-height:1.55;overflow-x:hidden}
+button,input,label{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+
+.top{position:relative;overflow:hidden;background:linear-gradient(118deg,var(--brand),var(--accent));color:#fff;padding:1.25rem max(1rem,calc((100% - 1180px)/2));box-shadow:0 3px 14px #0003}
+.top:after{content:"";position:absolute;width:18rem;height:18rem;border:4rem solid #fff1;border-radius:50%;right:-6rem;top:-10rem}
+.top-inner{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
+.top-left{display:flex;flex-direction:column;gap:.3rem}
+.back-btn{display:inline-flex;align-items:center;gap:.4rem;color:#fff;text-decoration:none;font-size:.9rem;font-weight:700;opacity:.9;transition:opacity .15s}
+.back-btn:hover{opacity:1;text-decoration:underline}
+.top h1{font-size:clamp(1.35rem,3vw,2.05rem);line-height:1.2;margin:0}
+.top p{margin:0;color:#fff;opacity:.85;font-size:.92rem}
+.top-right{display:flex;align-items:center;gap:.65rem;flex-wrap:wrap}
+.switch-mode-btn{display:inline-flex;align-items:center;gap:.35rem;padding:.38rem .85rem;border-radius:999px;background:rgba(255,255,255,0.2);color:#fff;text-decoration:none;font-size:.82rem;font-weight:700;border:1px solid rgba(255,255,255,0.4);transition:all .15s}
+.switch-mode-btn:hover{background:rgba(255,255,255,0.35);transform:translateY(-1px)}
+.theme-badge{flex:none;border:1px solid #ffffff55;background:#ffffff18;border-radius:999px;padding:.38rem .75rem;font-size:.8rem;font-weight:700;letter-spacing:.03em}
+
+.shell{width:min(100%,1180px);margin:auto;padding:clamp(.7rem,2vw,1.35rem)}
+.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin-bottom:1rem}
+.part-tab{min-width:0;border:1px solid var(--line);border-top:4px solid transparent;background:#fff;border-radius:.85rem;padding:.85rem 1rem;text-align:left;color:var(--ink);box-shadow:0 4px 14px #1e344510;transition:transform .15s,box-shadow .15s,border-color .15s}
+.part-tab:not([disabled]):hover{transform:translateY(-2px);box-shadow:0 8px 20px #1e34451c}
+.part-tab strong,.part-tab span{display:block}
+.part-tab strong{font-size:1.05rem}
+.part-tab span{overflow:hidden;text-overflow:ellipsis;font-size:.84rem;color:var(--muted);margin-top:.2rem}
+.part-tab.active{border-top-color:var(--accent);background:var(--pale);outline:2px solid color-mix(in srgb,var(--accent) 38%,transparent)}
+
+.panel{display:none}
+.panel.active{display:block}
+.part-head{background:#fffc;border:1px solid var(--line);border-radius:1rem;padding:clamp(.85rem,2vw,1.15rem);margin-bottom:1.2rem;position:sticky;top:.35rem;z-index:4;box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.part-head h2{margin:0;font-size:clamp(1.15rem,2.5vw,1.45rem);color:var(--brand)}
+.directions{color:var(--muted);margin:.35rem 0 0;font-size:.9rem;line-height:1.5}
+
+.question{min-width:0;background:#fff;border:1px solid var(--line);border-radius:.85rem;padding:clamp(.85rem,2vw,1.15rem);margin:0 0 1rem;box-shadow:0 3px 12px #20384d0b;transition:border-color .2s,box-shadow .2s}
+.question.highlight-target{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent);animation:pulse-highlight 1.5s ease-out}
+@keyframes pulse-highlight{0%{transform:scale(1.01)}50%{transform:scale(1)}100%{transform:scale(1)}}
+.qnum{font-size:1.05rem;margin:0 0 .5rem;color:var(--brand);font-weight:800}
+.qprompt{font-size:1.02rem;line-height:1.6;margin-bottom:.85rem;color:#1e293b;font-weight:500}
+
+.choices{display:grid;gap:.5rem}
+.choice{display:flex;min-width:0;align-items:flex-start;gap:.65rem;border:1px solid var(--line);border-radius:.65rem;padding:.7rem .85rem;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}
+.choice:hover{background:var(--pale);border-color:var(--accent)}
+.choice:has(input:checked){background:var(--pale);border-color:var(--accent);box-shadow:inset 4px 0 0 var(--accent)}
+.choice:has(input:focus-visible){outline:3px solid var(--focus);outline-offset:1px}
+.choice input{flex:none;margin:.24rem 0 0;accent-color:var(--accent)}
+.choice span{min-width:0;overflow-wrap:anywhere;font-size:.95rem}
+
+/* Part 6 Passage Layout */
+.passage-block{background:color-mix(in srgb,var(--pale) 60%,#fff);border:1px solid var(--line);border-radius:1rem;padding:clamp(.8rem,2vw,1.2rem);margin-bottom:1.5rem}
+.passage-header{color:var(--brand);font-size:1.05rem;padding:.2rem .4rem .9rem;border-bottom:1px solid var(--line);margin-bottom:1rem}
+.passage-layout{display:grid;grid-template-columns:1.15fr 1fr;gap:1.2rem;align-items:start}
+.passage-text-panel{background:#fff;border:1px solid var(--line);border-radius:.85rem;padding:1.2rem;box-shadow:0 3px 12px #20384d0b;position:sticky;top:5.5rem;max-height:calc(100vh - 7rem);overflow-y:auto}
+.passage-text{line-height:1.8;color:#2d3748;white-space:pre-line;font-size:.96rem}
+.blank-chip{display:inline-block;background:var(--brand);color:#fff;padding:.12rem .5rem;border-radius:6px;font-weight:700;font-size:.88rem;margin:0 .2rem;cursor:pointer;transition:transform .15s,background .15s}
+.blank-chip:hover{background:var(--accent);transform:scale(1.08)}
+.blank-chip.answered{background:var(--accent)}
+.passage-questions-panel{display:flex;flex-direction:column;gap:.9rem}
+.p6-question{margin:0}
+
+.passage-translation{margin-top:1.1rem;border-top:1px dashed var(--line);padding-top:.85rem}
+.passage-translation summary{cursor:pointer;font-weight:700;color:var(--brand);font-size:.9rem;padding:.3rem 0;user-select:none}
+.trans-body{margin-top:.6rem;padding:.85rem;background:#f8fafc;border-radius:.6rem;font-size:.9rem;color:#475569;line-height:1.75;white-space:pre-line;border:1px solid #e2e8f0}
+
+/* Explanation & Review */
+.explanation-box{margin-top:.9rem;padding:.85rem 1rem;background:#f8fafc;border:1px solid #e2e8f0;border-left:4px solid var(--accent);border-radius:.6rem;font-size:.9rem;line-height:1.65}
+.exp-tag{display:inline-block;background:#e2e8f0;color:#334155;font-weight:700;font-size:.78rem;padding:.2rem .6rem;border-radius:999px;margin-bottom:.55rem}
+.exp-body{color:#1e293b}
+
+.review-correct{border-color:#80c6a5;background:#f3fbf7}
+.review-wrong{border-color:#e4a39e;background:#fff7f6}
+.review-note{display:none;font-weight:700;margin:.6rem 0 0;font-size:.92rem}
+.submitted .review-note{display:block}
+.submitted [data-exp-box]{display:block !important}
+.submitted [data-trans]{display:block !important}
+.good{color:var(--good)}
+.bad{color:var(--bad)}
+
+.submit-row{background:#fff;border:1px solid var(--line);border-radius:.85rem;padding:1rem 1.25rem;display:flex;align-items:center;gap:1rem;justify-content:space-between;box-shadow:var(--shadow);margin-top:1.2rem}
+.submit{min-height:44px;border:0;border-radius:.65rem;padding:.72rem 1.35rem;background:var(--brand);color:#fff;font-weight:800;transition:background .15s}
+.submit:hover:not(:disabled){background:var(--accent)}
+.submit:disabled{opacity:.45;cursor:not-allowed}
+.result{display:none;background:#fff;border-left:5px solid var(--good);border-radius:.7rem;padding:1.15rem;margin:1.2rem 0;box-shadow:var(--shadow);line-height:1.7}
+.result.show{display:block}
+.result strong{font-size:1.2rem}
+
+/* Completion summary */
+.completion-summary{background:#fff;border:1px solid var(--line);border-top:6px solid var(--accent);border-radius:1rem;padding:clamp(.9rem,2.4vw,1.4rem);margin:1.5rem 0;box-shadow:var(--shadow);scroll-margin-top:1rem}
+.completion-summary:focus{outline:3px solid var(--focus);outline-offset:3px}
+.completion-summary h2{margin:0;color:var(--brand);font-size:clamp(1.3rem,3vw,1.8rem)}
+.summary-lead{margin:.25rem 0 1rem;color:var(--muted)}
+.score-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem;margin-bottom:.8rem}
+.score-box{min-width:0;background:var(--pale);border:1px solid var(--line);border-radius:.75rem;padding:.78rem;text-align:center}
+.score-box span{display:block;color:var(--muted);font-size:.78rem;font-weight:800;text-transform:uppercase;letter-spacing:.03em}
+.score-box strong{display:block;color:var(--brand);font-size:clamp(1.2rem,3vw,1.7rem);overflow-wrap:anywhere}
+.part-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.55rem;margin:.8rem 0 1.2rem}
+.part-score{border:1px solid var(--line);border-radius:.7rem;padding:.68rem;background:#fff}
+.part-score b,.part-score span{display:block}
+.part-score span{color:var(--muted);font-size:.86rem}
+.missed-heading{margin:1.2rem 0 .65rem;color:var(--brand);font-size:1.08rem}
+.missed-list{display:grid;gap:.55rem}
+.missed-row{display:grid;grid-template-columns:minmax(7rem,1.2fr) repeat(2,minmax(6rem,.8fr)) auto;gap:.65rem;align-items:center;border:1px solid #e9c6c2;background:#fff8f7;border-radius:.72rem;padding:.7rem}
+.missed-row span{min-width:0;overflow-wrap:anywhere}
+.missed-label{font-size:.75rem;color:var(--muted);display:block}
+.review-jump{min-height:40px;border:1px solid var(--accent);border-radius:.55rem;background:#fff;color:var(--brand);font-weight:800;padding:.5rem .75rem;transition:all .15s}
+.review-jump:hover{background:var(--pale)}
+.perfect-note{border:1px solid #a7d7bf;background:#f3fbf7;color:var(--good);border-radius:.72rem;padding:.85rem;font-weight:800}
+.next-test-banner{margin-top:1.5rem;padding:1rem 1.2rem;background:var(--pale);border:1px solid var(--line);border-radius:.85rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.next-test-banner span{font-weight:700;color:var(--brand)}
+.btn-next-action{background:var(--brand);color:#fff;text-decoration:none;padding:.6rem 1.1rem;border-radius:.6rem;font-weight:700;font-size:.9rem;transition:background .15s}
+.btn-next-action:hover{background:var(--accent)}
+
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.foot{text-align:center;color:var(--muted);font-size:.82rem;padding:2rem}
+
+@media(max-width:900px){
+  .passage-layout{grid-template-columns:1fr}
+  .passage-text-panel{position:static;max-height:none}
+}
+@media(max-width:760px){
+  .top{padding:1rem}
+  .top-inner{align-items:flex-start;flex-direction:column}
+  .shell{padding:.65rem}
+  .summary{grid-template-columns:1fr}
+  .part-head{position:static}
+  .submit-row{align-items:stretch;flex-direction:column}
+  .submit{width:100%}
+  .missed-row{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .review-jump{grid-column:1/-1;width:100%}
+}
+@media(max-width:520px){
+  .score-overview{grid-template-columns:1fr}
+  .score-box{display:flex;align-items:center;justify-content:space-between;text-align:left;gap:.7rem}
+  .score-box strong{font-size:1.25rem}
+  .part-breakdown{grid-template-columns:1fr}
+  .missed-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="top-left">
+      <a href="index.html" class="back-btn">← 回到測驗選單</a>
+      <h1>多益閱讀模擬測驗 Test 6</h1>
+      <p>Part 5 & Part 6 · 共 46 題 (Q101–Q146) · 附完整文法解析與篇章中譯</p>
+    </div>
+    <div class="top-right">
+      <a href="test6.html" class="switch-mode-btn">🎧 切換至聽力測驗 Test 6</a>
+      <span class="theme-badge">Teal Healthcare</span>
+    </div>
+  </div>
+</header>
+
+<main class="shell" data-test-id="toeic-reading-test-6">
+  <nav class="summary" aria-label="Reading test parts" id="partTabs">
+    <button class="part-tab active" data-tab="5">
+      <strong>Part 5: 單句填空</strong>
+      <span>Incomplete Sentences · 30 題 (Q101–Q130)</span>
+    </button>
+    <button class="part-tab" data-tab="6">
+      <strong>Part 6: 短文填空</strong>
+      <span>Text Completion · 16 題 (Q131–Q146)</span>
+    </button>
+  </nav>
+
+  <div id="parts">
+    <!-- Part 5 Panel -->
+    <section class="panel active" data-part="5" aria-labelledby="part-title-5">
+      <div class="part-head">
+        <h2 id="part-title-5">Part 5: Incomplete Sentences (單句填空)</h2>
+        <p class="directions">Directions: A word or phrase is missing in each of the sentences below. Four answer choices are given below each sentence. Select the best answer to complete the sentence. (Questions 101–130)</p>
+      </div>
+      <div class="questions">
+        <article class="question" id="question-101" tabindex="-1" data-question="101"><div class="qnum"><b>101.</b></div><div class="qprompt">Aviation maintenance technicians must ______ inspect the hydraulic pressure lines before clearing an aircraft for departure.</div><div class="choices"><label class="choice" for="q101_A"><input type="radio" id="q101_A" name="q101" value="A"><span><b>A</b>. more thorough</span></label><label class="choice" for="q101_B"><input type="radio" id="q101_B" name="q101" value="B"><span><b>B</b>. thoroughness</span></label><label class="choice" for="q101_C"><input type="radio" id="q101_C" name="q101" value="C"><span><b>C</b>. thorough</span></label><label class="choice" for="q101_D"><input type="radio" id="q101_D" name="q101" value="D"><span><b>D</b>. thoroughly</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 1: 詞性判斷（副詞修飾及物動詞）</div><div class="exp-body">題目：Aviation maintenance technicians must ______ inspect the hydraulic pressure lines before clearing an aircraft for departure.<br><br>中譯：航空維修技術人員在核准航機起飛之前，必須徹底檢查液壓管線。<br><br><strong>【文法詳解】：</strong>空格位於助動詞 must 與動詞原形 inspect 之間，依據英語語法結構，應填入副詞用以修飾一般動詞 inspect。(D) thoroughly 為副詞，意為「徹底地、詳盡地」，文法與商務航空維修語境完全吻合。<br><br><strong>【選項解析】：</strong>(C) thorough 為形容詞（徹底的），無法修飾動詞；(B) thoroughness 為名詞（徹底、周密），不可置於助動詞與動詞之間；(A) more thorough 為形容詞比較級，缺乏名詞修飾對象。<br><br><strong>【核心單字與搭配詞】：</strong>hydraulic pressure (n.) 液壓；clear ... for departure (phr.) 核准起飛；maintenance technician (n.) 維修技術員</div></div></article><article class="question" id="question-102" tabindex="-1" data-question="102"><div class="qnum"><b>102.</b></div><div class="qprompt">______ the contract was signed late on Friday afternoon, the press release was postponed until Monday morning.</div><div class="choices"><label class="choice" for="q102_A"><input type="radio" id="q102_A" name="q102" value="A"><span><b>A</b>. Because of</span></label><label class="choice" for="q102_B"><input type="radio" id="q102_B" name="q102" value="B"><span><b>B</b>. Since</span></label><label class="choice" for="q102_C"><input type="radio" id="q102_C" name="q102" value="C"><span><b>C</b>. In order to</span></label><label class="choice" for="q102_D"><input type="radio" id="q102_D" name="q102" value="D"><span><b>D</b>. Despite</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 4: 副詞子句與連接詞（表原因的連接詞 Since）</div><div class="exp-body">題目：\_\_\_\_\__ the contract was signed late on Friday afternoon, the press release was postponed until Monday morning.<br><br>中譯：由於合約在週五下午很晚才簽署，新聞稿延到週一早上才發布。<br><br><strong>【文法詳解】：</strong>空格後為完整子句，且「簽約太晚」是「延後發布」的原因，用表原因的連接詞 Since。故選 (B)。<br><br><strong>【選項解析】：</strong>(A) Because of 為介系詞片語；(D) Despite 為介系詞；(C) In order to 後接原形動詞。<br><br><strong>【核心單字與搭配詞】：</strong>contract (n.) 合約；press release (n.) 新聞稿</div></div></article><article class="question" id="question-103" tabindex="-1" data-question="103"><div class="qnum"><b>103.</b></div><div class="qprompt">Please ______ the meeting room key to the receptionist as soon as your session has ended.</div><div class="choices"><label class="choice" for="q103_A"><input type="radio" id="q103_A" name="q103" value="A"><span><b>A</b>. remain</span></label><label class="choice" for="q103_B"><input type="radio" id="q103_B" name="q103" value="B"><span><b>B</b>. refund</span></label><label class="choice" for="q103_C"><input type="radio" id="q103_C" name="q103" value="C"><span><b>C</b>. retire</span></label><label class="choice" for="q103_D"><input type="radio" id="q103_D" name="q103" value="D"><span><b>D</b>. return</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Business Vocabulary: 商務核心動詞辨析（return 歸還）</div><div class="exp-body">題目：Please ______ the meeting room key to the receptionist as soon as your session has ended.<br><br>中譯：會議結束後，請立即將會議室鑰匙歸還給接待人員。<br><br><strong>【文法詳解】：</strong>本題考動詞語意。受詞為 the meeting room key，且後方有 to the receptionist，「把鑰匙歸還給接待人員」應用 (D) return（歸還）。<br><br><strong>【選項解析】：</strong>(A) remain 為不及物動詞（留下），不能接受詞；(C) retire 意為「退休」；(B) refund 意為「退款」，受詞應為金額。<br><br><strong>【核心單字與搭配詞】：</strong>return (v.) 歸還；receptionist (n.) 接待人員；session (n.) 會議、場次</div></div></article><article class="question" id="question-104" tabindex="-1" data-question="104"><div class="qnum"><b>104.</b></div><div class="qprompt">Since 2023, the regional dairy cooperative ______ rigorous organic certification standards across all twenty-four affiliated farms.</div><div class="choices"><label class="choice" for="q104_A"><input type="radio" id="q104_A" name="q104" value="A"><span><b>A</b>. will implement</span></label><label class="choice" for="q104_B"><input type="radio" id="q104_B" name="q104" value="B"><span><b>B</b>. implement</span></label><label class="choice" for="q104_C"><input type="radio" id="q104_C" name="q104" value="C"><span><b>C</b>. was implementing</span></label><label class="choice" for="q104_D"><input type="radio" id="q104_D" name="q104" value="D"><span><b>D</b>. has implemented</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 2: 動詞型態與時態（現在完成式與持續性時間副詞）</div><div class="exp-body">題目：Since 2023, the regional dairy cooperative ______ rigorous organic certification standards across all twenty-four affiliated farms.<br><br>中譯：自 2023 年以來，該地區酪農合作社已在其所有二十四家附屬農場推行了嚴格的有機認證標準。<br><br><strong>【文法詳解】：</strong>句首時間副詞片語 Since 2023（自 2023 年以來）為現在完成式的典型時間標誌，表示動作從過去持續累積至今。主詞 the regional dairy cooperative 為單數集合名詞，故動詞應選 (D) has implemented。<br><br><strong>【選項解析】：</strong>(B) implement 為現在式複數原形，主謂不一致且時態不符；(A) will implement 為未來式；(C) was implementing 為過去進行式，無法搭配表示累積持續時間的 Over the past...。<br><br><strong>【核心單字與搭配詞】：</strong>dairy cooperative (n.) 酪農合作社；rigorous (adj.) 嚴格的；affiliated (adj.) 附屬的、隸屬的</div></div></article><article class="question" id="question-105" tabindex="-1" data-question="105"><div class="qnum"><b>105.</b></div><div class="qprompt">Before introducing the transatlantic route, AeroGlobal Airlines considered ______ additional fuel-efficient widebody aircraft from the French manufacturer.</div><div class="choices"><label class="choice" for="q105_A"><input type="radio" id="q105_A" name="q105" value="A"><span><b>A</b>. to lease</span></label><label class="choice" for="q105_B"><input type="radio" id="q105_B" name="q105" value="B"><span><b>B</b>. leasing</span></label><label class="choice" for="q105_C"><input type="radio" id="q105_C" name="q105" value="C"><span><b>C</b>. lease</span></label><label class="choice" for="q105_D"><input type="radio" id="q105_D" name="q105" value="D"><span><b>D</b>. leased</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 5: 不定詞與動名詞（及物動詞 consider 後接動名詞）</div><div class="exp-body">題目：Before introducing the transatlantic route, AeroGlobal Airlines considered ______ additional fuel-efficient widebody aircraft from the French manufacturer.<br><br>中譯：在開闢跨大西洋航線之前，全球航空曾考慮向該法國製造商租賃額外的省油廣體客機。<br><br><strong>【文法詳解】：</strong>及物動詞 consider（考慮）後方若接動詞作受詞，依文法慣用法必須使用動名詞 V-ing，不可使用不定詞 to V。(B) leasing 符合此文法規則。<br><br><strong>【選項解析】：</strong>(C) lease 為動詞原形；(A) to lease 為不定詞，不符合 consider 的受詞用法；(D) leased 為過去式或過去分詞，不可作受詞。<br><br><strong>【核心單字與搭配詞】：</strong>transatlantic (adj.) 跨大西洋的；fuel-efficient (adj.) 省油的；widebody aircraft (n.) 廣體客機；lease (v.) 租賃</div></div></article><article class="question" id="question-106" tabindex="-1" data-question="106"><div class="qnum"><b>106.</b></div><div class="qprompt">All designs created during the project will be ______ under the terms of the agreement.</div><div class="choices"><label class="choice" for="q106_A"><input type="radio" id="q106_A" name="q106" value="A"><span><b>A</b>. protect</span></label><label class="choice" for="q106_B"><input type="radio" id="q106_B" name="q106" value="B"><span><b>B</b>. protects</span></label><label class="choice" for="q106_C"><input type="radio" id="q106_C" name="q106" value="C"><span><b>C</b>. protected</span></label><label class="choice" for="q106_D"><input type="radio" id="q106_D" name="q106" value="D"><span><b>D</b>. protecting</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 2: 動詞型態與時態（未來式被動語態 will be + p.p.）</div><div class="exp-body">題目：All designs created during the project will be ______ under the terms of the agreement.<br><br>中譯：專案期間創作的所有設計都將依協議條款受到保護。<br><br><strong>【文法詳解】：</strong>空格位於助動詞 will be 之後，構成被動語態需接過去分詞，故選 (C) protected，形成 will be protected（未來式被動語態）。<br><br><strong>【選項解析】：</strong>(A) protect 為原形動詞，不可直接接於 be 動詞後構成被動語態；(B) protects 為現在式單數動詞，時態與人稱皆不符；(D) protecting 為現在分詞，會形成主動語意「將進行保護」，與句意（設計本身被保護）不符。<br><br><strong>【核心單字與搭配詞】：</strong>protect (v.) 保護；terms (n.) 條款</div></div></article><article class="question" id="question-107" tabindex="-1" data-question="107"><div class="qnum"><b>107.</b></div><div class="qprompt">Due to unexpected convective weather over the Pacific, the captain requested ______ to alter the flight path and descend to a smoother cruising altitude.</div><div class="choices"><label class="choice" for="q107_A"><input type="radio" id="q107_A" name="q107" value="A"><span><b>A</b>. allowance</span></label><label class="choice" for="q107_B"><input type="radio" id="q107_B" name="q107" value="B"><span><b>B</b>. admission</span></label><label class="choice" for="q107_C"><input type="radio" id="q107_C" name="q107" value="C"><span><b>C</b>. clearance</span></label><label class="choice" for="q107_D"><input type="radio" id="q107_D" name="q107" value="D"><span><b>D</b>. reservation</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務單字與搭配詞（航空營運專業術語：request clearance）</div><div class="exp-body">題目：Due to unexpected convective weather over the Pacific, the captain requested ______ to alter the flight path and descend to a smoother cruising altitude.<br><br>中譯：由於太平洋上空突如其來的對流天氣，機長請求許可改變航路，並下降至更平穩的巡航高度。<br><br><strong>【文法詳解】：</strong>本題測驗航空商務與飛航管制的專業搭配詞。request clearance 為民航標準用語，意為「請求（塔台/航管）放行許可、許可通行」。故選 (C) clearance。<br><br><strong>【選項解析】：</strong>(A) allowance 意為津貼或額度（如行李額度 baggage allowance）；(B) admission 意為入場許可或門票；(D) reservation 意為訂位或預約，皆不合航空通訊語境。<br><br><strong>【核心單字與搭配詞】：</strong>convective weather (n.) 對流天氣；clearance (n.) 航管放行許可；cruising altitude (n.) 巡航高度</div></div></article><article class="question" id="question-108" tabindex="-1" data-question="108"><div class="qnum"><b>108.</b></div><div class="qprompt">Greenway Foods is negotiating with a farmer ______ organic vegetables are sold at markets throughout the region.</div><div class="choices"><label class="choice" for="q108_A"><input type="radio" id="q108_A" name="q108" value="A"><span><b>A</b>. which</span></label><label class="choice" for="q108_B"><input type="radio" id="q108_B" name="q108" value="B"><span><b>B</b>. whom</span></label><label class="choice" for="q108_C"><input type="radio" id="q108_C" name="q108" value="C"><span><b>C</b>. who</span></label><label class="choice" for="q108_D"><input type="radio" id="q108_D" name="q108" value="D"><span><b>D</b>. whose</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 6: 關係子句（所有格關係代名詞 whose）</div><div class="exp-body">題目：Greenway Foods is negotiating with a farmer ______ organic vegetables are sold at markets throughout the region.<br><br>中譯：綠道食品正在與一位農民洽談，他的有機蔬菜在全區的市集販售。<br><br><strong>【文法詳解】：</strong>空格後接名詞 organic vegetables，表示「農民的蔬菜」，用 whose。故選 (D)。<br><br><strong>【選項解析】：</strong>(C) who 與 (B) whom 後方不能直接接名詞；(A) which 用於事物且會造成子句缺主詞。<br><br><strong>【核心單字與搭配詞】：</strong>negotiate (v.) 洽談；organic (adj.) 有機的</div></div></article><article class="question" id="question-109" tabindex="-1" data-question="109"><div class="qnum"><b>109.</b></div><div class="qprompt">All applications for the training grant must be received ______ 5:00 P.M. on March 31.</div><div class="choices"><label class="choice" for="q109_A"><input type="radio" id="q109_A" name="q109" value="A"><span><b>A</b>. for</span></label><label class="choice" for="q109_B"><input type="radio" id="q109_B" name="q109" value="B"><span><b>B</b>. by</span></label><label class="choice" for="q109_C"><input type="radio" id="q109_C" name="q109" value="C"><span><b>C</b>. until</span></label><label class="choice" for="q109_D"><input type="radio" id="q109_D" name="q109" value="D"><span><b>D</b>. at</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務介系詞（時間介系詞 by 表最後期限）</div><div class="exp-body">題目：All applications for the training grant must be received ______ 5:00 P.M. on March 31.<br><br>中譯：所有培訓補助申請必須在 3 月 31 日下午 5 點前送達。<br><br><strong>【文法詳解】：</strong>表示「在某個時間點之前（最晚）」完成一次性的動作，應用介系詞 by；must be received by 5:00 P.M. 為期限的標準表達。故選 (B)。<br><br><strong>【選項解析】：</strong>(C) until 表示動作或狀態「持續到」某時間，與一次性的 received 不搭配；(D) at 表示「正好在」某時刻，無期限含義；(A) for 表示持續多久，後接期間。<br><br><strong>【核心單字與搭配詞】：</strong>application (n.) 申請；grant (n.) 補助金；receive (v.) 收到</div></div></article><article class="question" id="question-110" tabindex="-1" data-question="110"><div class="qnum"><b>110.</b></div><div class="qprompt">Only ______ seats remain available for Friday&#x27;s product demonstration, so please register early.</div><div class="choices"><label class="choice" for="q110_A"><input type="radio" id="q110_A" name="q110" value="A"><span><b>A</b>. a few</span></label><label class="choice" for="q110_B"><input type="radio" id="q110_B" name="q110" value="B"><span><b>B</b>. much</span></label><label class="choice" for="q110_C"><input type="radio" id="q110_C" name="q110" value="C"><span><b>C</b>. a little</span></label><label class="choice" for="q110_D"><input type="radio" id="q110_D" name="q110" value="D"><span><b>D</b>. little</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">限定詞與數量詞（a few + 複數可數名詞）</div><div class="exp-body">題目：Only ______ seats remain available for Friday&#x27;s product demonstration, so please register early.<br><br>中譯：週五產品展示會只剩少數幾個座位，請儘早報名。<br><br><strong>【文法詳解】：</strong>空格後接複數可數名詞 seats，需要用於可數名詞的數量詞；only a few seats（只剩少數幾個座位）語意合理。故選 (A) a few。<br><br><strong>【選項解析】：</strong>(C) a little、(B) much、(D) little 皆用於不可數名詞（a little time / much effort），不能修飾複數可數名詞 seats。<br><br><strong>【核心單字與搭配詞】：</strong>demonstration (n.) 展示、示範；available (adj.) 可用的；register (v.) 報名</div></div></article><article class="question" id="question-111" tabindex="-1" data-question="111"><div class="qnum"><b>111.</b></div><div class="qprompt">The legal department is preparing all the ______ needed to register the company&#x27;s new logo.</div><div class="choices"><label class="choice" for="q111_A"><input type="radio" id="q111_A" name="q111" value="A"><span><b>A</b>. documentation</span></label><label class="choice" for="q111_B"><input type="radio" id="q111_B" name="q111" value="B"><span><b>B</b>. documented</span></label><label class="choice" for="q111_C"><input type="radio" id="q111_C" name="q111" value="C"><span><b>C</b>. documentary</span></label><label class="choice" for="q111_D"><input type="radio" id="q111_D" name="q111" value="D"><span><b>D</b>. document</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 1: 詞性判斷（不可數名詞 documentation）</div><div class="exp-body">題目：The legal department is preparing all the ______ needed to register the company&#x27;s new logo.<br><br>中譯：法務部門正在準備登記公司新標誌所需的所有文件。<br><br><strong>【文法詳解】：</strong>空格作為 preparing 的受詞，前方有 all the、後方有過去分詞 needed 修飾，需要名詞；documentation（文件、書面資料）為不可數名詞，可直接接在 all the 之後，符合語意及文法。故選 (A)。<br><br><strong>【選項解析】：</strong>(D) document 為可數名詞，若接在 all the 之後須用複數形 documents，不可用單數 document；(C) documentary 意為「紀錄片」；(B) documented 為過去分詞。<br><br><strong>【核心單字與搭配詞】：</strong>documentation (n.) 文件；register (v.) 登記</div></div></article><article class="question" id="question-112" tabindex="-1" data-question="112"><div class="qnum"><b>112.</b></div><div class="qprompt">AeroGlobal recorded an extraordinary increase in passenger volume following the announcement of its ______ flight routes across the Asia-Pacific region.</div><div class="choices"><label class="choice" for="q112_A"><input type="radio" id="q112_A" name="q112" value="A"><span><b>A</b>. expansion</span></label><label class="choice" for="q112_B"><input type="radio" id="q112_B" name="q112" value="B"><span><b>B</b>. expanded</span></label><label class="choice" for="q112_C"><input type="radio" id="q112_C" name="q112" value="C"><span><b>C</b>. expand</span></label><label class="choice" for="q112_D"><input type="radio" id="q112_D" name="q112" value="D"><span><b>D</b>. expanse</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 10: 分詞構句與分詞形容詞（過去分詞作形容詞修飾名詞）</div><div class="exp-body">題目：AeroGlobal recorded an extraordinary increase in passenger volume following the announcement of its ______ flight routes across the Asia-Pacific region.<br><br>中譯：在全球航空宣布擴增亞太地區航線後，其客運量呈現非凡的增長。<br><br><strong>【文法詳解】：</strong>空格位於所有格代名詞 its 與名詞片語 flight routes 之間，應填入分詞形容詞來修飾 routes。(B) expanded 為過去分詞作形容詞，表示「擴增後的、擴充的」，語意通順且符合商務慣用用法。<br><br><strong>【選項解析】：</strong>(C) expand 為動詞原形；(D) expanse 為名詞（廣闊區域）；(A) expansion 為名詞（擴張），名詞修飾名詞在此不如過去分詞形容詞 expanded 精準恰當。<br><br><strong>【核心單字與搭配詞】：</strong>extraordinary (adj.) 非凡的、驚人的；passenger volume (n.) 客運量；expanded (adj.) 擴充後的</div></div></article><article class="question" id="question-113" tabindex="-1" data-question="113"><div class="qnum"><b>113.</b></div><div class="qprompt">______ the barcode is completely legible to the automated optical scanners, the conveyor belt will divert the parcel to a manual verification station.</div><div class="choices"><label class="choice" for="q113_A"><input type="radio" id="q113_A" name="q113" value="A"><span><b>A</b>. Despite</span></label><label class="choice" for="q113_B"><input type="radio" id="q113_B" name="q113" value="B"><span><b>B</b>. Unless</span></label><label class="choice" for="q113_C"><input type="radio" id="q113_C" name="q113" value="C"><span><b>C</b>. Whether</span></label><label class="choice" for="q113_D"><input type="radio" id="q113_D" name="q113" value="D"><span><b>D</b>. Although</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 4: 副詞子句與連接詞（否定條件連接詞 Unless「除非」）</div><div class="exp-body">題目：\_\_\_\_\__ the barcode is completely legible to the automated optical scanners, the conveyor belt will divert the parcel to a manual verification station.<br><br>中譯：除非條碼對自動光學掃描儀完全清晰可讀，否則輸送帶會將包裹分流至人工查驗站。<br><br><strong>【文法詳解】：</strong>空格後引導副詞子句 the barcode is completely legible...，主要子句說明輸送帶會將包裹轉向人工查驗站。邏輯關係為「除非…否則…」，相當於 If... not。(B) Unless 為從屬連接詞，符合條件邏輯與句法結構。<br><br><strong>【選項解析】：</strong>(D) Although 表讓步（雖然），文意衝突；(A) Despite 為介系詞，不能接完整子句；(C) Whether 引導名詞子句或讓步子句，文意不通。<br><br><strong>【核心單字與搭配詞】：</strong>legible (adj.) 清晰可讀的；optical scanner (n.) 光學掃描儀；divert (v.) 使轉向、分流</div></div></article><article class="question" id="question-114" tabindex="-1" data-question="114"><div class="qnum"><b>114.</b></div><div class="qprompt">______ any shipment of fresh produce fail the quality check, the entire batch will be returned to the supplier.</div><div class="choices"><label class="choice" for="q114_A"><input type="radio" id="q114_A" name="q114" value="A"><span><b>A</b>. Were</span></label><label class="choice" for="q114_B"><input type="radio" id="q114_B" name="q114" value="B"><span><b>B</b>. Had</span></label><label class="choice" for="q114_C"><input type="radio" id="q114_C" name="q114" value="C"><span><b>C</b>. If</span></label><label class="choice" for="q114_D"><input type="radio" id="q114_D" name="q114" value="D"><span><b>D</b>. Should</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 9: 假設語態與倒裝句（Should + S + 原形動詞的倒裝條件句）</div><div class="exp-body">題目：\_\_\_\_\__ any shipment of fresh produce fail the quality check, the entire batch will be returned to the supplier.<br><br>中譯：若任何一批生鮮農產品未通過品質檢查，整批將退回供應商。<br><br><strong>【文法詳解】：</strong>空格後為主詞 any shipment 加原形動詞 fail，屬於省略 if、將 should 提前的倒裝條件句（= If any shipment should fail…）。故選 (D)。<br><br><strong>【選項解析】：</strong>(A) Were 後方須接名詞或形容詞；(B) Had 後方須接過去分詞；(C) If 後方動詞須為 fails。<br><br><strong>【核心單字與搭配詞】：</strong>shipment (n.) 貨件；produce (n.) 農產品；batch (n.) 批次</div></div></article><article class="question" id="question-115" tabindex="-1" data-question="115"><div class="qnum"><b>115.</b></div><div class="qprompt">Under the agreement, Harbor Café retains the ______ right to sell the bakery&#x27;s pastries in the downtown area.</div><div class="choices"><label class="choice" for="q115_A"><input type="radio" id="q115_A" name="q115" value="A"><span><b>A</b>. common</span></label><label class="choice" for="q115_B"><input type="radio" id="q115_B" name="q115" value="B"><span><b>B</b>. dependent</span></label><label class="choice" for="q115_C"><input type="radio" id="q115_C" name="q115" value="C"><span><b>C</b>. exclusive</span></label><label class="choice" for="q115_D"><input type="radio" id="q115_D" name="q115" value="D"><span><b>D</b>. hesitant</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Business Vocabulary: 形容詞語意辨析（exclusive right 獨家權利）</div><div class="exp-body">題目：Under the agreement, Harbor Café retains the ______ right to sell the bakery&#x27;s pastries in the downtown area.<br><br>中譯：依據協議，港灣咖啡館保有在市中心區販售該烘焙坊糕點的獨家權利。<br><br><strong>【文法詳解】：</strong>本題考形容詞語意。「獨家販售權」用 exclusive right。故選 (C)。<br><br><strong>【選項解析】：</strong>(B) dependent 意為「依賴的」；(A) common 意為「共同的」；(D) hesitant 意為「猶豫的」，皆不合句意。<br><br><strong>【核心單字與搭配詞】：</strong>exclusive (adj.) 獨家的；retain (v.) 保有</div></div></article><article class="question" id="question-116" tabindex="-1" data-question="116"><div class="qnum"><b>116.</b></div><div class="qprompt">When the fire alarm sounded yesterday, most of the staff ______ lunch in the cafeteria.</div><div class="choices"><label class="choice" for="q116_A"><input type="radio" id="q116_A" name="q116" value="A"><span><b>A</b>. have had</span></label><label class="choice" for="q116_B"><input type="radio" id="q116_B" name="q116" value="B"><span><b>B</b>. are having</span></label><label class="choice" for="q116_C"><input type="radio" id="q116_C" name="q116" value="C"><span><b>C</b>. will have</span></label><label class="choice" for="q116_D"><input type="radio" id="q116_D" name="q116" value="D"><span><b>D</b>. were having</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 2: 動詞型態與時態（過去進行式表過去某時正在進行的動作）</div><div class="exp-body">題目：When the fire alarm sounded yesterday, most of the staff ______ lunch in the cafeteria.<br><br>中譯：昨天火災警報響起時，大部分員工正在餐廳用午餐。<br><br><strong>【文法詳解】：</strong>When 子句使用過去簡單式 sounded 描述過去某一時間點發生的事件，主要子句描述當時「正在進行」的動作，應用過去進行式 was/were + V-ing；主詞 most of the staff 視為複數，故選 (D) were having。<br><br><strong>【選項解析】：</strong>(A) have had 為現在完成式，與 yesterday 不合；(C) will have 為未來式；(B) are having 為現在進行式，時態皆與過去事件矛盾。<br><br><strong>【核心單字與搭配詞】：</strong>fire alarm (n.) 火災警報；staff (n.) 員工（集合名詞）；cafeteria (n.) 餐廳</div></div></article><article class="question" id="question-117" tabindex="-1" data-question="117"><div class="qnum"><b>117.</b></div><div class="qprompt">The technician repaired the printer so ______ that nobody noticed it had been out of order.</div><div class="choices"><label class="choice" for="q117_A"><input type="radio" id="q117_A" name="q117" value="A"><span><b>A</b>. quickly</span></label><label class="choice" for="q117_B"><input type="radio" id="q117_B" name="q117" value="B"><span><b>B</b>. quicker</span></label><label class="choice" for="q117_C"><input type="radio" id="q117_C" name="q117" value="C"><span><b>C</b>. quickness</span></label><label class="choice" for="q117_D"><input type="radio" id="q117_D" name="q117" value="D"><span><b>D</b>. quick</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 1: 詞性判斷（副詞修飾動詞；so + adv. + that）</div><div class="exp-body">題目：The technician repaired the printer so ______ that nobody noticed it had been out of order.<br><br>中譯：技師把印表機修得非常快，沒有人察覺它曾經故障。<br><br><strong>【文法詳解】：</strong>空格修飾動詞 repaired（修理得如何），須用副詞；同時 so + 副詞 + that 子句表示程度與結果。故選 (A) quickly。<br><br><strong>【選項解析】：</strong>(D) quick 為形容詞，不能修飾動詞；(C) quickness 為名詞；(B) quicker 為比較級形容詞，缺少比較對象且詞性不合。<br><br><strong>【核心單字與搭配詞】：</strong>technician (n.) 技師；repair (v.) 修理；out of order (phr.) 故障</div></div></article><article class="question" id="question-118" tabindex="-1" data-question="118"><div class="qnum"><b>118.</b></div><div class="qprompt">Ms. Tan left the office an hour early ______ she could catch the 4:30 train to Taichung.</div><div class="choices"><label class="choice" for="q118_A"><input type="radio" id="q118_A" name="q118" value="A"><span><b>A</b>. because of</span></label><label class="choice" for="q118_B"><input type="radio" id="q118_B" name="q118" value="B"><span><b>B</b>. as if</span></label><label class="choice" for="q118_C"><input type="radio" id="q118_C" name="q118" value="C"><span><b>C</b>. in order to</span></label><label class="choice" for="q118_D"><input type="radio" id="q118_D" name="q118" value="D"><span><b>D</b>. so that</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 4: 副詞子句與連接詞（表目的的連接詞 so that）</div><div class="exp-body">題目：Ms. Tan left the office an hour early ______ she could catch the 4:30 train to Taichung.<br><br>中譯：譚女士提早一小時下班，以便趕上四點半開往台中的火車。<br><br><strong>【文法詳解】：</strong>空格後為完整子句 she could catch…（S + V），且語意為「提早下班」的目的是「趕火車」，故選表目的的連接詞 (D) so that；so that 子句常搭配 can/could。<br><br><strong>【選項解析】：</strong>(C) in order to 後方須接原形動詞，不能接子句；(A) because of 為介系詞片語，後接名詞；(B) as if 表「彷彿」，語意不合。<br><br><strong>【核心單字與搭配詞】：</strong>leave the office (phr.) 下班離開辦公室；catch a train (phr.) 趕上火車</div></div></article><article class="question" id="question-119" tabindex="-1" data-question="119"><div class="qnum"><b>119.</b></div><div class="qprompt">During the peak holiday e-commerce rush, the parcel distribution warehouse operated at full ______, dispatching 150,000 packages daily.</div><div class="choices"><label class="choice" for="q119_A"><input type="radio" id="q119_A" name="q119" value="A"><span><b>A</b>. proximity</span></label><label class="choice" for="q119_B"><input type="radio" id="q119_B" name="q119" value="B"><span><b>B</b>. capacity</span></label><label class="choice" for="q119_C"><input type="radio" id="q119_C" name="q119" value="C"><span><b>C</b>. expenditure</span></label><label class="choice" for="q119_D"><input type="radio" id="q119_D" name="q119" value="D"><span><b>D</b>. reluctance</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務單字與搭配詞（物流營運搭配詞：at full capacity 全負載/滿載運轉）</div><div class="exp-body">題目：During the peak holiday e-commerce rush, the parcel distribution warehouse operated at full ______, dispatching 150,000 packages daily.<br><br>中譯：在節慶電商購物高峰期間，該包裹配送倉庫以滿載產能運作，每日發出15萬件包裹。<br><br><strong>【文法詳解】：</strong>本題測驗倉儲與物流營運的高頻固定搭配詞。at full capacity 意為「以全產能、以最大負載量（運轉）」。故選 (B) capacity。<br><br><strong>【選項解析】：</strong>(D) reluctance（勉強、不情願）；(A) proximity（接近、鄰近）；(C) expenditure（花費、支出），皆無法與 at full 搭配表示營運量能。<br><br><strong>【核心單字與搭配詞】：</strong>peak holiday rush (n.) 節慶高峰熱潮；at full capacity (phr.) 全負載運轉；dispatch (v.) 發送、派遣</div></div></article><article class="question" id="question-120" tabindex="-1" data-question="120"><div class="qnum"><b>120.</b></div><div class="qprompt">Safety compliance certificates must be displayed visibly ______ the commercial food processing plant for regulatory inspectors to examine.</div><div class="choices"><label class="choice" for="q120_A"><input type="radio" id="q120_A" name="q120" value="A"><span><b>A</b>. onto</span></label><label class="choice" for="q120_B"><input type="radio" id="q120_B" name="q120" value="B"><span><b>B</b>. between</span></label><label class="choice" for="q120_C"><input type="radio" id="q120_C" name="q120" value="C"><span><b>C</b>. throughout</span></label><label class="choice" for="q120_D"><input type="radio" id="q120_D" name="q120" value="D"><span><b>D</b>. amid</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務介系詞與搭配詞（空間介系詞 throughout 遍布、在…各處）</div><div class="exp-body">題目：Safety compliance certificates must be displayed visibly ______ the commercial food processing plant for regulatory inspectors to examine.<br><br>中譯：安全合規證書必須顯著張貼於商業食品加工廠各處，以便監管檢查員查閱。<br><br><strong>【文法詳解】：</strong>本題測驗場所介系詞用法。throughout 表示「遍及、在…各處」，後接 the plant，表示在整座食品廠內部各個指定地點均有展示。故選 (C)。<br><br><strong>【選項解析】：</strong>(D) amid（在…混亂之中）；(A) onto（向…之上，表動態方向）；(B) between（在兩者之間，後接單一設施著名詞不合文法）。<br><br><strong>【核心單字與搭配詞】：</strong>safety compliance (n.) 安全合規；processing plant (n.) 加工廠；visibly (adv.) 顯著地、可見地</div></div></article><article class="question" id="question-121" tabindex="-1" data-question="121"><div class="qnum"><b>121.</b></div><div class="qprompt">Every regional jet operated by Horizon Skyways is ______ with advanced digital cockpit flight displays.</div><div class="choices"><label class="choice" for="q121_A"><input type="radio" id="q121_A" name="q121" value="A"><span><b>A</b>. equips</span></label><label class="choice" for="q121_B"><input type="radio" id="q121_B" name="q121" value="B"><span><b>B</b>. equipping</span></label><label class="choice" for="q121_C"><input type="radio" id="q121_C" name="q121" value="C"><span><b>C</b>. equipment</span></label><label class="choice" for="q121_D"><input type="radio" id="q121_D" name="q121" value="D"><span><b>D</b>. equipped</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 3: 主動與被動語態（狀態被動慣用句型 be equipped with 配備有…）</div><div class="exp-body">題目：Every regional jet operated by Horizon Skyways is ______ with advanced digital cockpit flight displays.<br><br>中譯：地平線天際航空營運的每架區域客機皆配備了先進的數位駕駛艙飛行顯示器。<br><br><strong>【文法詳解】：</strong>句型 be equipped with... 為極高頻商務與工程用語，意為「配備有…」，主詞 Every regional jet 為被配備之客體，需填入過去分詞 (D) equipped。<br><br><strong>【選項解析】：</strong>(B) equipping 為現在分詞（進行式），意為主動為某物裝配，後接 with 語義不通；(C) equipment 為名詞；(A) equips 為動詞第三人稱單數。<br><br><strong>【核心單字與搭配詞】：</strong>regional jet (n.) 區域噴射客機；cockpit (n.) 駕駛艙；be equipped with (phr.) 配備有</div></div></article><article class="question" id="question-122" tabindex="-1" data-question="122"><div class="qnum"><b>122.</b></div><div class="qprompt">The accountant with ______ we worked last year has opened her own firm downtown.</div><div class="choices"><label class="choice" for="q122_A"><input type="radio" id="q122_A" name="q122" value="A"><span><b>A</b>. who</span></label><label class="choice" for="q122_B"><input type="radio" id="q122_B" name="q122" value="B"><span><b>B</b>. whose</span></label><label class="choice" for="q122_C"><input type="radio" id="q122_C" name="q122" value="C"><span><b>C</b>. which</span></label><label class="choice" for="q122_D"><input type="radio" id="q122_D" name="q122" value="D"><span><b>D</b>. whom</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 6: 關係子句（介系詞 + 受格關係代名詞 whom）</div><div class="exp-body">題目：The accountant with ______ we worked last year has opened her own firm downtown.<br><br>中譯：我們去年合作的那位會計師在市中心開了自己的事務所。<br><br><strong>【文法詳解】：</strong>關係代名詞緊接在介系詞 with 之後且先行詞為人，須用受格 whom。故選 (D)。<br><br><strong>【選項解析】：</strong>(A) who 為主格，不能接在介系詞後；(B) whose 為所有格；(C) which 用於事物。<br><br><strong>【核心單字與搭配詞】：</strong>accountant (n.) 會計師；firm (n.) 事務所</div></div></article><article class="question" id="question-123" tabindex="-1" data-question="123"><div class="qnum"><b>123.</b></div><div class="qprompt">To receive the organic certification, the farm had to pass ______ inspections of its soil and water.</div><div class="choices"><label class="choice" for="q123_A"><input type="radio" id="q123_A" name="q123" value="A"><span><b>A</b>. lenient</span></label><label class="choice" for="q123_B"><input type="radio" id="q123_B" name="q123" value="B"><span><b>B</b>. vacant</span></label><label class="choice" for="q123_C"><input type="radio" id="q123_C" name="q123" value="C"><span><b>C</b>. stringent</span></label><label class="choice" for="q123_D"><input type="radio" id="q123_D" name="q123" value="D"><span><b>D</b>. flimsy</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Business Vocabulary: 形容詞語意辨析（stringent 嚴格的）</div><div class="exp-body">題目：To receive the organic certification, the farm had to pass ______ inspections of its soil and water.<br><br>中譯：為取得有機認證，農場必須通過對土壤與水源的嚴格檢查。<br><br><strong>【文法詳解】：</strong>本題考形容詞語意。「嚴格的檢查」用 stringent。故選 (C)。<br><br><strong>【選項解析】：</strong>(A) lenient 意為「寬鬆的」；(D) flimsy 意為「脆弱的」；(B) vacant 意為「空的」，皆不合句意。<br><br><strong>【核心單字與搭配詞】：</strong>stringent (adj.) 嚴格的；certification (n.) 認證</div></div></article><article class="question" id="question-124" tabindex="-1" data-question="124"><div class="qnum"><b>124.</b></div><div class="qprompt">The client has asked for ______ two weeks to review the terms of the proposal.</div><div class="choices"><label class="choice" for="q124_A"><input type="radio" id="q124_A" name="q124" value="A"><span><b>A</b>. other</span></label><label class="choice" for="q124_B"><input type="radio" id="q124_B" name="q124" value="B"><span><b>B</b>. another</span></label><label class="choice" for="q124_C"><input type="radio" id="q124_C" name="q124" value="C"><span><b>C</b>. each</span></label><label class="choice" for="q124_D"><input type="radio" id="q124_D" name="q124" value="D"><span><b>D</b>. the others</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">限定詞與數量詞（another + 數字 + 複數名詞表「再……」）</div><div class="exp-body">題目：The client has asked for ______ two weeks to review the terms of the proposal.<br><br>中譯：客戶要求再給兩週的時間審閱提案條款。<br><br><strong>【文法詳解】：</strong>another 除了修飾單數名詞外，也可接「數字 + 複數名詞」表示「再多……」（another two weeks 再兩週 / another ten minutes 再十分鐘）。故選 (B)。<br><br><strong>【選項解析】：</strong>(A) other 修飾複數名詞時表「其他的」，但不能表達「額外再加」的意思，且 other two weeks 不合慣用法；(D) the others 為代名詞，後方不能接名詞；(C) each 後接單數名詞。<br><br><strong>【核心單字與搭配詞】：</strong>ask for (phr.) 要求；review (v.) 審閱；terms (n.) 條款；proposal (n.) 提案</div></div></article><article class="question" id="question-125" tabindex="-1" data-question="125"><div class="qnum"><b>125.</b></div><div class="qprompt">The two companies agreed to settle their disagreement through ______ rather than in court.</div><div class="choices"><label class="choice" for="q125_A"><input type="radio" id="q125_A" name="q125" value="A"><span><b>A</b>. arbitration</span></label><label class="choice" for="q125_B"><input type="radio" id="q125_B" name="q125" value="B"><span><b>B</b>. speculation</span></label><label class="choice" for="q125_C"><input type="radio" id="q125_C" name="q125" value="C"><span><b>C</b>. prosecution</span></label><label class="choice" for="q125_D"><input type="radio" id="q125_D" name="q125" value="D"><span><b>D</b>. duplication</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Business Vocabulary: 名詞語意辨析（arbitration 仲裁）</div><div class="exp-body">題目：The two companies agreed to settle their disagreement through ______ rather than in court.<br><br>中譯：兩家公司同意透過仲裁而非法院解決爭議。<br><br><strong>【文法詳解】：</strong>本題考名詞語意。「不上法院，而透過仲裁解決」用 arbitration。故選 (A)。<br><br><strong>【選項解析】：</strong>(C) prosecution 意為「起訴」；(B) speculation 意為「推測」；(D) duplication 意為「重複」，皆不合句意。<br><br><strong>【核心單字與搭配詞】：</strong>arbitration (n.) 仲裁；disagreement (n.) 爭議</div></div></article><article class="question" id="question-126" tabindex="-1" data-question="126"><div class="qnum"><b>126.</b></div><div class="qprompt">Automated warehouse managers often schedule additional overnight maintenance shifts to ______ the movement of high-priority holiday parcels.</div><div class="choices"><label class="choice" for="q126_A"><input type="radio" id="q126_A" name="q126" value="A"><span><b>A</b>. counteract</span></label><label class="choice" for="q126_B"><input type="radio" id="q126_B" name="q126" value="B"><span><b>B</b>. eliminate</span></label><label class="choice" for="q126_C"><input type="radio" id="q126_C" name="q126" value="C"><span><b>C</b>. expedite</span></label><label class="choice" for="q126_D"><input type="radio" id="q126_D" name="q126" value="D"><span><b>D</b>. diminish</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務單字與搭配詞（電商倉儲物流核心動詞：expedite 加速、催辦）</div><div class="exp-body">題目：Automated warehouse managers often schedule additional overnight maintenance shifts to ______ the movement of high-priority holiday parcels.<br><br>中譯：自動化倉庫經理通常會安排額外的大夜維護班次，以加速高優先級節慶包裹的運轉作業。<br><br><strong>【文法詳解】：</strong>動詞 expedite 意為「加速、促進、催辦」，常修飾 order fulfillment、shipment 或 package movement。(C) expedite 與文義完全相符。<br><br><strong>【選項解析】：</strong>(B) eliminate（消除、淘汰）；(A) counteract（抵消、阻礙）；(D) diminish（減少、縮減），皆與提升物流效率的目標相反。<br><br><strong>【核心單字與搭配詞】：</strong>schedule (v.) 排定；expedite (v.) 加速、催辦；high-priority (adj.) 高優先順序的</div></div></article><article class="question" id="question-127" tabindex="-1" data-question="127"><div class="qnum"><b>127.</b></div><div class="qprompt">The finance department will ______ all outstanding invoices before the end of the fiscal year.</div><div class="choices"><label class="choice" for="q127_A"><input type="radio" id="q127_A" name="q127" value="A"><span><b>A</b>. solve</span></label><label class="choice" for="q127_B"><input type="radio" id="q127_B" name="q127" value="B"><span><b>B</b>. settle</span></label><label class="choice" for="q127_C"><input type="radio" id="q127_C" name="q127" value="C"><span><b>C</b>. set</span></label><label class="choice" for="q127_D"><input type="radio" id="q127_D" name="q127" value="D"><span><b>D</b>. seat</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Business Vocabulary: 商務動賓搭配（settle an invoice 結清帳款）</div><div class="exp-body">題目：The finance department will ______ all outstanding invoices before the end of the fiscal year.<br><br>中譯：財務部門將在會計年度結束前結清所有未付發票。<br><br><strong>【文法詳解】：</strong>本題考動詞與名詞的搭配。settle an invoice/a bill/an account 意為「結清、支付」，與受詞 outstanding invoices（未付發票）搭配自然。故選 (B) settle。<br><br><strong>【選項解析】：</strong>(A) solve 意為「解決（問題）」，受詞通常是 problem；(D) seat 意為「使就座」；(C) set 意為「設定、放置」，皆不與 invoices 搭配。<br><br><strong>【核心單字與搭配詞】：</strong>settle (v.) 結清、支付；outstanding (adj.) 未付的、未解決的；fiscal year (n.) 會計年度</div></div></article><article class="question" id="question-128" tabindex="-1" data-question="128"><div class="qnum"><b>128.</b></div><div class="qprompt">The catering company ______ already confirmed the menu for the annual awards dinner.</div><div class="choices"><label class="choice" for="q128_A"><input type="radio" id="q128_A" name="q128" value="A"><span><b>A</b>. having</span></label><label class="choice" for="q128_B"><input type="radio" id="q128_B" name="q128" value="B"><span><b>B</b>. have</span></label><label class="choice" for="q128_C"><input type="radio" id="q128_C" name="q128" value="C"><span><b>C</b>. has</span></label><label class="choice" for="q128_D"><input type="radio" id="q128_D" name="q128" value="D"><span><b>D</b>. had</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 2: 動詞型態與時態（現在完成式與 already）</div><div class="exp-body">題目：The catering company ______ already confirmed the menu for the annual awards dinner.<br><br>中譯：外燴公司已經確認了年度頒獎晚宴的菜單。<br><br><strong>【文法詳解】：</strong>副詞 already（已經）搭配過去分詞 confirmed，構成現在完成式 has/have + already + p.p.；主詞 The catering company 為第三人稱單數，故選 (C) has。<br><br><strong>【選項解析】：</strong>(D) had 為過去完成式，需有另一個過去時間點作對照，句中沒有；(B) have 與單數主詞不一致；(A) having 不能作句子的主要動詞。<br><br><strong>【核心單字與搭配詞】：</strong>catering company (n.) 外燴公司；confirm (v.) 確認；awards dinner (n.) 頒獎晚宴</div></div></article><article class="question" id="question-129" tabindex="-1" data-question="129"><div class="qnum"><b>129.</b></div><div class="qprompt">After several weeks of discussion, the two bookstores agreed on ______ beneficial terms for sharing delivery costs.</div><div class="choices"><label class="choice" for="q129_A"><input type="radio" id="q129_A" name="q129" value="A"><span><b>A</b>. severely</span></label><label class="choice" for="q129_B"><input type="radio" id="q129_B" name="q129" value="B"><span><b>B</b>. mutually</span></label><label class="choice" for="q129_C"><input type="radio" id="q129_C" name="q129" value="C"><span><b>C</b>. hazardously</span></label><label class="choice" for="q129_D"><input type="radio" id="q129_D" name="q129" value="D"><span><b>D</b>. suspiciously</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Business Vocabulary: 副詞語意辨析（mutually beneficial 互利的）</div><div class="exp-body">題目：After several weeks of discussion, the two bookstores agreed on ______ beneficial terms for sharing delivery costs.<br><br>中譯：經過數週討論，兩家書店就分攤運費達成了互利的條件。<br><br><strong>【文法詳解】：</strong>本題考副詞語意。mutually beneficial（互利的）為常見搭配。故選 (B)。<br><br><strong>【選項解析】：</strong>(D) suspiciously 意為「可疑地」；(A) severely 意為「嚴重地」；(C) hazardously 意為「危險地」，皆不合句意。<br><br><strong>【核心單字與搭配詞】：</strong>mutually (adv.) 相互地；beneficial (adj.) 有益的</div></div></article><article class="question" id="question-130" tabindex="-1" data-question="130"><div class="qnum"><b>130.</b></div><div class="qprompt">Because fresh flowers are highly ______, they are shipped in refrigerated trucks overnight.</div><div class="choices"><label class="choice" for="q130_A"><input type="radio" id="q130_A" name="q130" value="A"><span><b>A</b>. disposable</span></label><label class="choice" for="q130_B"><input type="radio" id="q130_B" name="q130" value="B"><span><b>B</b>. perishable</span></label><label class="choice" for="q130_C"><input type="radio" id="q130_C" name="q130" value="C"><span><b>C</b>. durable</span></label><label class="choice" for="q130_D"><input type="radio" id="q130_D" name="q130" value="D"><span><b>D</b>. sustainable</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Business Vocabulary: 形容詞語意辨析（perishable 易腐壞的）</div><div class="exp-body">題目：Because fresh flowers are highly ______, they are shipped in refrigerated trucks overnight.<br><br>中譯：由於鮮花極易凋謝，它們以冷藏卡車連夜運送。<br><br><strong>【文法詳解】：</strong>本題考形容詞語意。「容易腐壞、需冷藏運送」用 perishable。故選 (B)。<br><br><strong>【選項解析】：</strong>(C) durable 意為「耐用的」；(A) disposable 意為「拋棄式的」；(D) sustainable 意為「永續的」，皆不合句意。<br><br><strong>【核心單字與搭配詞】：</strong>perishable (adj.) 易腐壞的；refrigerated (adj.) 冷藏的<br><br><strong>第二部分：段落填空（Part 6: Questions 131–146）詳細解析</strong></div></div></article>
+      </div>
+      <div class="submit-row">
+        <span data-completion="5">0 of 30 answered</span>
+        <button class="submit" data-submit-part="5">Submit Part 5</button>
+      </div>
+      <div class="result" data-result-part="5" role="status"></div>
+    </section>
+
+    <!-- Part 6 Panel -->
+    <section class="panel" data-part="6" aria-labelledby="part-title-6">
+      <div class="part-head">
+        <h2 id="part-title-6">Part 6: Text Completion (短文填空)</h2>
+        <p class="directions">Directions: Read the texts that follow. A word, phrase, or sentence is missing in parts of each text. Four answer choices for each empty space are given below the text. Select the best answer to complete the text. (Questions 131–146)</p>
+      </div>
+      <div class="questions">
+        <div class="passage-block" id="passage-1"><div class="passage-header"><strong>Questions 131-134 refer to the following memo.</strong></div><div class="passage-layout"><div class="passage-text-panel"><div class="passage-text">MEMO
+
+To: All Cabin Crew
+From: Gavin Whitlock, Director of In-Flight Services
+Date: October 14
+Subject: New uniforms
+
+Please be advised that AeroPacific Airways <span class="blank-chip" data-jump="131">[131]</span> new cabin crew uniforms starting Monday, November 2. The new design was chosen after a survey of more than 800 crew members and features lighter fabric and a more <span class="blank-chip" data-jump="132">[132]</span> fit for long-haul flights.
+
+<span class="blank-chip" data-jump="133">[133]</span>. Crew members based in Seattle and Los Angeles may collect their uniforms from the crew center from October 19; other bases will receive deliveries the following week. Please try on all items <span class="blank-chip" data-jump="134">[134]</span> and report any sizing problems to your base manager by October 28.
+
+Old uniforms should be returned to the crew center by November 15 for recycling.</div><details class="passage-translation" data-trans hidden><summary>📖 查看本篇全文中譯 (View Translation)</summary><div class="trans-body"><strong>【篇章全文中譯】：</strong>\<br>備忘錄\<br><br>收件人：全體機組人員\<br>寄件人：機上服務總監 蓋文·惠特洛克\<br>日期：10 月 14 日\<br>主旨：新制服\<br><br>謹此通知，亞太航空將於 \[131] 11 月 2 日（週一）起啟用新的機組人員制服。新設計是在對 800 多位組員進行問卷後選出的，採用更輕的布料，並針對長程航班提供更舒適的 \[132] 剪裁。\<br><br>\[133] 每位組員將獲得三件襯衫、兩件外套與一件大衣。西雅圖與洛杉磯基地的組員可自 10 月 19 日起至組員中心領取；其他基地將於下一週收到配送。請儘速 \[134] 試穿所有品項，並於 10 月 28 日前向基地經理回報任何尺寸問題。\<br><br>舊制服請於 11 月 15 日前交回組員中心以便回收。</div></details></div><div class="passage-questions-panel"><article class="question p6-question" id="question-131" tabindex="-1" data-question="131"><div class="qnum"><b>131.</b> Select the best answer to complete blank [131].</div><div class="choices"><label class="choice" for="q131_A"><input type="radio" id="q131_A" name="q131" value="A"><span><b>A</b>. introduces</span></label><label class="choice" for="q131_B"><input type="radio" id="q131_B" name="q131" value="B"><span><b>B</b>. was introducing</span></label><label class="choice" for="q131_C"><input type="radio" id="q131_C" name="q131" value="C"><span><b>C</b>. will introduce</span></label><label class="choice" for="q131_D"><input type="radio" id="q131_D" name="q131" value="D"><span><b>D</b>. introduced</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 2: 動詞型態與時態（未來式）</div><div class="exp-body"><strong>【正解解析】：</strong>新制服自 11 月 2 日起啟用，備忘錄日期為 10 月 14 日，用未來式 will introduce。<br><br><strong>【干擾選項剖析】：</strong>(A) introduces 為現在式；(D) introduced 為過去式；(B) was introducing 為過去進行式。<br><br><strong>【核心詞彙】：</strong>cabin crew (n.) 機組人員；uniform (n.) 制服</div></div></article><article class="question p6-question" id="question-132" tabindex="-1" data-question="132"><div class="qnum"><b>132.</b> Select the best answer to complete blank [132].</div><div class="choices"><label class="choice" for="q132_A"><input type="radio" id="q132_A" name="q132" value="A"><span><b>A</b>. comfortable</span></label><label class="choice" for="q132_B"><input type="radio" id="q132_B" name="q132" value="B"><span><b>B</b>. comfort</span></label><label class="choice" for="q132_C"><input type="radio" id="q132_C" name="q132" value="C"><span><b>C</b>. comfortably</span></label><label class="choice" for="q132_D"><input type="radio" id="q132_D" name="q132" value="D"><span><b>D</b>. comforting</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 1: 詞性判斷（形容詞修飾名詞）</div><div class="exp-body"><strong>【正解解析】：</strong>空格修飾名詞 fit（合身度），需要形容詞 comfortable。<br><br><strong>【干擾選項剖析】：</strong>(B) comfort 為名詞；(C) comfortably 為副詞；(D) comforting 意為「令人安慰的」。<br><br><strong>【核心詞彙】：</strong>fabric (n.) 布料；long-haul (adj.) 長程的</div></div></article><article class="question p6-question" id="question-133" tabindex="-1" data-question="133"><div class="qnum"><b>133.</b> Select the best answer to complete blank [133].</div><div class="choices"><label class="choice" for="q133_A"><input type="radio" id="q133_A" name="q133" value="A"><span><b>A</b>. The old design was introduced in 2015.</span></label><label class="choice" for="q133_B"><input type="radio" id="q133_B" name="q133" value="B"><span><b>B</b>. Each crew member will receive three shirts, two jackets, and one coat.</span></label><label class="choice" for="q133_C"><input type="radio" id="q133_C" name="q133" value="C"><span><b>C</b>. The survey results will be published next year.</span></label><label class="choice" for="q133_D"><input type="radio" id="q133_D" name="q133" value="D"><span><b>D</b>. Flights to Tokyo will be suspended during the winter.</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Part 6: 全句插入（承接新制服，說明配發內容）</div><div class="exp-body"><strong>【正解解析】：</strong>前段介紹新制服，插入句說明每位組員將配發的件數，後一句接著說明領取地點與時間，語意連貫。<br><br><strong>【干擾選項剖析】：</strong>(C)、(D)、(A) 皆與制服配發無關。<br><br><strong>【核心詞彙】：</strong>receive (v.) 收到；collect (v.) 領取</div></div></article><article class="question p6-question" id="question-134" tabindex="-1" data-question="134"><div class="qnum"><b>134.</b> Select the best answer to complete blank [134].</div><div class="choices"><label class="choice" for="q134_A"><input type="radio" id="q134_A" name="q134" value="A"><span><b>A</b>. promptly</span></label><label class="choice" for="q134_B"><input type="radio" id="q134_B" name="q134" value="B"><span><b>B</b>. prompted</span></label><label class="choice" for="q134_C"><input type="radio" id="q134_C" name="q134" value="C"><span><b>C</b>. prompt</span></label><label class="choice" for="q134_D"><input type="radio" id="q134_D" name="q134" value="D"><span><b>D</b>. promptness</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 1: 詞性判斷（副詞修飾動詞）</div><div class="exp-body"><strong>【正解解析】：</strong>空格修飾動詞片語 try on all items，需要副詞 promptly（儘速）。<br><br><strong>【干擾選項剖析】：</strong>(C) prompt 為形容詞；(D) promptness 為名詞；(B) prompted 為過去分詞。<br><br><strong>【核心詞彙】：</strong>try on (phr.) 試穿；sizing (n.) 尺寸</div></div></article></div></div></div><div class="passage-block" id="passage-2"><div class="passage-header"><strong>Questions 135-138 refer to the following e-mail.</strong></div><div class="passage-layout"><div class="passage-text-panel"><div class="passage-text">To: All Staff
+From: Nadia Berger, Office Manager
+Date: November 20
+Subject: Year-end party — December 18
+
+Dear Colleagues,
+
+I am pleased to announce that this year&#x27;s year-end party <span class="blank-chip" data-jump="135">[135]</span> at the Harborview Restaurant on Friday, December 18, from 6:30 P.M. The evening will include a buffet dinner, a short awards presentation, and live music.
+
+Partners and spouses are welcome. <span class="blank-chip" data-jump="136">[136]</span>. Please reply to this e-mail by December 4 with the number of guests you will bring and any dietary requirements so that we can give the restaurant <span class="blank-chip" data-jump="137">[137]</span> numbers.
+
+The restaurant is a five-minute walk from Central Station, and there is a parking garage next door. As in previous years, the company will cover the cost of the dinner; drinks after the first two <span class="blank-chip" data-jump="138">[138]</span> be paid for individually.
+
+I look forward to celebrating with you all.
+Nadia</div><details class="passage-translation" data-trans hidden><summary>📖 查看本篇全文中譯 (View Translation)</summary><div class="trans-body"><strong>【篇章全文中譯】：</strong>\<br>收件人：全體同仁\<br>寄件人：辦公室經理 娜迪亞·柏格\<br>日期：11 月 20 日\<br>主旨：年終派對 — 12 月 18 日\<br><br>各位同事：\<br><br>很高興宣布今年的年終派對將於 12 月 18 日（週五）晚上 6:30 起在港景餐廳舉行 \[135]。當晚將有自助晚餐、簡短的頒獎典禮與現場音樂演出。\<br><br>歡迎伴侶與配偶參加。\[136] 每位員工可免費攜帶一位來賓。請於 12 月 4 日前回覆此信，告知您將攜帶的來賓人數及任何飲食需求，以便我們向餐廳提供準確的 \[137] 人數。\<br><br>餐廳距離中央車站步行五分鐘，隔壁有停車場。與往年相同，公司將負擔晚餐費用；前兩杯之後的飲料須 \[138] 自費。\<br><br>期待與大家一同慶祝。\<br>娜迪亞</div></details></div><div class="passage-questions-panel"><article class="question p6-question" id="question-135" tabindex="-1" data-question="135"><div class="qnum"><b>135.</b> Select the best answer to complete blank [135].</div><div class="choices"><label class="choice" for="q135_A"><input type="radio" id="q135_A" name="q135" value="A"><span><b>A</b>. held</span></label><label class="choice" for="q135_B"><input type="radio" id="q135_B" name="q135" value="B"><span><b>B</b>. is holding</span></label><label class="choice" for="q135_C"><input type="radio" id="q135_C" name="q135" value="C"><span><b>C</b>. will be held</span></label><label class="choice" for="q135_D"><input type="radio" id="q135_D" name="q135" value="D"><span><b>D</b>. will hold</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 3: 主動與被動語態（未來式被動）</div><div class="exp-body"><strong>【正解解析】：</strong>主詞 the year-end party 是「被舉辦」的對象，且日期在未來，用 will be held。<br><br><strong>【干擾選項剖析】：</strong>(B) is holding 與 (D) will hold 為主動，派對不會「舉辦」東西；(A) held 為過去式。<br><br><strong>【核心詞彙】：</strong>buffet (n.) 自助餐；awards presentation (n.) 頒獎</div></div></article><article class="question p6-question" id="question-136" tabindex="-1" data-question="136"><div class="qnum"><b>136.</b> Select the best answer to complete blank [136].</div><div class="choices"><label class="choice" for="q136_A"><input type="radio" id="q136_A" name="q136" value="A"><span><b>A</b>. The restaurant has asked us to confirm our final numbers.</span></label><label class="choice" for="q136_B"><input type="radio" id="q136_B" name="q136" value="B"><span><b>B</b>. Each employee may bring one guest at no charge.</span></label><label class="choice" for="q136_C"><input type="radio" id="q136_C" name="q136" value="C"><span><b>C</b>. Parking is free after 6:00 P.M.</span></label><label class="choice" for="q136_D"><input type="radio" id="q136_D" name="q136" value="D"><span><b>D</b>. The awards will be announced next Monday.</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Part 6: 全句插入（承接「歡迎伴侶參加」，說明來賓人數限制）</div><div class="exp-body"><strong>【正解解析】：</strong>前一句說歡迎伴侶與配偶參加，插入句說明每位員工可免費攜帶一位來賓，後一句再請大家回覆來賓人數，邏輯連貫。<br><br><strong>【干擾選項剖析】：</strong>(A) 與後一句「請回覆人數」重複且順序不合；(D) 得獎名單與 (C) 停車皆偏離來賓人數的主題。<br><br><strong>【核心詞彙】：</strong>guest (n.) 來賓；at no charge (phr.) 免費</div></div></article><article class="question p6-question" id="question-137" tabindex="-1" data-question="137"><div class="qnum"><b>137.</b> Select the best answer to complete blank [137].</div><div class="choices"><label class="choice" for="q137_A"><input type="radio" id="q137_A" name="q137" value="A"><span><b>A</b>. accuracy</span></label><label class="choice" for="q137_B"><input type="radio" id="q137_B" name="q137" value="B"><span><b>B</b>. accurately</span></label><label class="choice" for="q137_C"><input type="radio" id="q137_C" name="q137" value="C"><span><b>C</b>. accuracies</span></label><label class="choice" for="q137_D"><input type="radio" id="q137_D" name="q137" value="D"><span><b>D</b>. accurate</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 1: 詞性判斷（形容詞修飾名詞）</div><div class="exp-body"><strong>【正解解析】：</strong>空格修飾名詞 numbers（人數），需要形容詞 accurate（準確的）。<br><br><strong>【干擾選項剖析】：</strong>(A) accuracy 與 (C) accuracies 為名詞；(B) accurately 為副詞。<br><br><strong>【核心詞彙】：</strong>dietary requirement (n.) 飲食需求；numbers (n.) 人數</div></div></article><article class="question p6-question" id="question-138" tabindex="-1" data-question="138"><div class="qnum"><b>138.</b> Select the best answer to complete blank [138].</div><div class="choices"><label class="choice" for="q138_A"><input type="radio" id="q138_A" name="q138" value="A"><span><b>A</b>. has</span></label><label class="choice" for="q138_B"><input type="radio" id="q138_B" name="q138" value="B"><span><b>B</b>. had</span></label><label class="choice" for="q138_C"><input type="radio" id="q138_C" name="q138" value="C"><span><b>C</b>. must</span></label><label class="choice" for="q138_D"><input type="radio" id="q138_D" name="q138" value="D"><span><b>D</b>. having</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 2: 動詞型態（情態助動詞 must + be + p.p.）</div><div class="exp-body"><strong>【正解解析】：</strong>空格後接 be paid for（被動），需要情態助動詞 must，表示「前兩杯之後的飲料必須自費」。<br><br><strong>【干擾選項剖析】：</strong>(A) has 與 (B) had 後方須接過去分詞 been；(D) having 不能作助動詞接 be。<br><br><strong>【核心詞彙】：</strong>cover the cost (phr.) 支付費用；individually (adv.) 各自地</div></div></article></div></div></div><div class="passage-block" id="passage-3"><div class="passage-header"><strong>Questions 139-142 refer to the following report.</strong></div><div class="passage-layout"><div class="passage-text-panel"><div class="passage-text">NEXUS LOGISTICS HUB 7 — MONTHLY OPERATIONS SUMMARY
+Prepared by: Kendra Boyce, Operations Manager
+Report period: November 1–30
+
+During November, the hub handled 412,000 parcels, an increase of 18 percent over the same month last year. The additional evening shift introduced in October <span class="blank-chip" data-jump="139">[139]</span> to be the main reason for the improvement, as it allowed us to process late-arriving deliveries on the same day.
+
+<span class="blank-chip" data-jump="140">[140]</span>. Staff turnover, however, remained higher than we would like, <span class="blank-chip" data-jump="141">[141]</span> eleven employees leaving during the month. Exit interviews suggest that the main causes are the distance from public transportation and the lack of a staff canteen.
+
+To address these concerns, we have arranged a shuttle bus from the Northgate station beginning December 8 and are seeking quotations for a small canteen <span class="blank-chip" data-jump="142">[142]</span> the ground floor.</div><details class="passage-translation" data-trans hidden><summary>📖 查看本篇全文中譯 (View Translation)</summary><div class="trans-body"><strong>【篇章全文中譯】：</strong>\<br>聯結物流第七轉運站 — 月度營運摘要\<br>編製：營運經理 肯德拉·博伊斯\<br>報告期間：11 月 1–30 日\<br><br>十一月，轉運站處理了 412,000 件包裹，比去年同月增加 18%。十月新增的晚班似乎 \[139] 是改善的主因，因為它讓我們能在當天處理晚到的貨件。\<br><br>\[140] 配送準確率也有提升，錯送的包裹不到 0.5%。然而，人員流動率仍高於我們的期望，本月有 \[141] 十一名員工離職。離職面談顯示，主要原因是距離大眾運輸太遠，以及沒有員工餐廳。\<br><br>為解決這些問題，我們已安排自 12 月 8 日起從北門車站發車的接駁巴士，並正在為一樓 \[142] 的小型員工餐廳徵求報價。</div></details></div><div class="passage-questions-panel"><article class="question p6-question" id="question-139" tabindex="-1" data-question="139"><div class="qnum"><b>139.</b> Select the best answer to complete blank [139].</div><div class="choices"><label class="choice" for="q139_A"><input type="radio" id="q139_A" name="q139" value="A"><span><b>A</b>. appears</span></label><label class="choice" for="q139_B"><input type="radio" id="q139_B" name="q139" value="B"><span><b>B</b>. appearing</span></label><label class="choice" for="q139_C"><input type="radio" id="q139_C" name="q139" value="C"><span><b>C</b>. to appear</span></label><label class="choice" for="q139_D"><input type="radio" id="q139_D" name="q139" value="D"><span><b>D</b>. appearance</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 2: 動詞型態（主要動詞 appear + to V）</div><div class="exp-body"><strong>【正解解析】：</strong>句子的主詞為 The additional evening shift，空格為主要動詞，appear to be 表示「似乎是」。<br><br><strong>【干擾選項剖析】：</strong>(B) appearing 與 (C) to appear 不能作主要動詞；(D) appearance 為名詞。<br><br><strong>【核心詞彙】：</strong>shift (n.) 班別；improvement (n.) 改善</div></div></article><article class="question p6-question" id="question-140" tabindex="-1" data-question="140"><div class="qnum"><b>140.</b> Select the best answer to complete blank [140].</div><div class="choices"><label class="choice" for="q140_A"><input type="radio" id="q140_A" name="q140" value="A"><span><b>A</b>. The evening shift will be discontinued in January.</span></label><label class="choice" for="q140_B"><input type="radio" id="q140_B" name="q140" value="B"><span><b>B</b>. Parcel volumes are expected to fall next year.</span></label><label class="choice" for="q140_C"><input type="radio" id="q140_C" name="q140" value="C"><span><b>C</b>. Delivery accuracy also improved, with fewer than 0.5 percent of parcels misrouted.</span></label><label class="choice" for="q140_D"><input type="radio" id="q140_D" name="q140" value="D"><span><b>D</b>. The hub will close for three days over the holiday.</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Part 6: 全句插入（承接正面成果，再以 however 轉折）</div><div class="exp-body"><strong>【正解解析】：</strong>前段說明包裹處理量成長，插入句補充配送準確率也提升，後一句以 however 轉折談人員流動率，正面成果與問題形成對比。<br><br><strong>【干擾選項剖析】：</strong>(D) 與 (B) 無法與後句的 however 形成對比；(A) 與前文晚班帶來改善的說法矛盾。<br><br><strong>【核心詞彙】：</strong>accuracy (n.) 準確率；misroute (v.) 錯送</div></div></article><article class="question p6-question" id="question-141" tabindex="-1" data-question="141"><div class="qnum"><b>141.</b> Select the best answer to complete blank [141].</div><div class="choices"><label class="choice" for="q141_A"><input type="radio" id="q141_A" name="q141" value="A"><span><b>A</b>. with</span></label><label class="choice" for="q141_B"><input type="radio" id="q141_B" name="q141" value="B"><span><b>B</b>. until</span></label><label class="choice" for="q141_C"><input type="radio" id="q141_C" name="q141" value="C"><span><b>C</b>. despite</span></label><label class="choice" for="q141_D"><input type="radio" id="q141_D" name="q141" value="D"><span><b>D</b>. among</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務介系詞（with + 名詞 + V-ing 表附帶狀況）</div><div class="exp-body"><strong>【正解解析】：</strong>「人員流動率偏高，有十一名員工在本月離職」用 with + 名詞 + V-ing 補充說明。<br><br><strong>【干擾選項剖析】：</strong>(C) despite 表讓步；(D) among 表在……之中；(B) until 表直到，皆不合語意。<br><br><strong>【核心詞彙】：</strong>turnover (n.) 人員流動率；exit interview (n.) 離職面談</div></div></article><article class="question p6-question" id="question-142" tabindex="-1" data-question="142"><div class="qnum"><b>142.</b> Select the best answer to complete blank [142].</div><div class="choices"><label class="choice" for="q142_A"><input type="radio" id="q142_A" name="q142" value="A"><span><b>A</b>. in</span></label><label class="choice" for="q142_B"><input type="radio" id="q142_B" name="q142" value="B"><span><b>B</b>. to</span></label><label class="choice" for="q142_C"><input type="radio" id="q142_C" name="q142" value="C"><span><b>C</b>. at</span></label><label class="choice" for="q142_D"><input type="radio" id="q142_D" name="q142" value="D"><span><b>D</b>. on</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務介系詞（樓層用 on）</div><div class="exp-body"><strong>【正解解析】：</strong>「在一樓」用 on the ground floor。<br><br><strong>【干擾選項剖析】：</strong>(A) in、(C) at、(B) to 皆不與樓層搭配。<br><br><strong>【核心詞彙】：</strong>quotation (n.) 報價；canteen (n.) 員工餐廳</div></div></article></div></div></div><div class="passage-block" id="passage-4"><div class="passage-header"><strong>Questions 143-146 refer to the following certification announcement letter.</strong></div><div class="passage-layout"><div class="passage-text-panel"><div class="passage-text">NATIONAL QUALITY STANDARDS BOARD
+
+February 10, 2027
+
+Ms. Clara Lindholm, Quality Assurance Director
+Lindholm Furniture Workshop
+Stavanger, Norway
+
+Dear Ms. Lindholm,
+
+On behalf of the National Quality Standards Board, I am delighted to inform you that Lindholm Furniture Workshop <span class="blank-chip" data-jump="143">[143]</span> our official Certificate of Craftsmanship Excellence for your handmade oak and walnut furniture collections. Our independent evaluation panel completed a thorough three-stage audit of your production facilities in late January. Careful record reviews verified that your wood supply preserves total <span class="blank-chip" data-jump="144">[144]</span> back to responsibly managed forests without unnecessary waste.
+
+<span class="blank-chip" data-jump="145">[145]</span> your finishing workshop adheres strictly to our safety and quality benchmarks, the audit board confirmed your full compliance with national craftsmanship standards. <span class="blank-chip" data-jump="146">[146]</span>. The formal authorization credentials will remain valid through February 2030, subject to annual surveillance inspections. We congratulate your artisans on maintaining such exemplary craftsmanship.</div><details class="passage-translation" data-trans hidden><summary>📖 查看本篇全文中譯 (View Translation)</summary><div class="trans-body"><strong>【篇章全文中譯】：</strong>\<br>國家品質標準委員會\<br>2027年2月10日\<br><br>收件人：克拉拉·林德霍姆 品質保證總監\<br>林德霍姆家具工坊\<br>挪威斯塔萬格\<br><br>親愛的林德霍姆女士：\<br>我謹代表國家品質標準委員會，非常高興地通知您：林德霍姆家具工坊已獲頒我們的官方工藝卓越證書，以表彰貴工坊生產的橡木與胡桃木手工家具系列。我們的獨立評審小組於一月下旬完成了對貴廠生產設施徹底的三階段審計。仔細的紀錄查核證實，貴工坊的木材供應可完整溯源至負責任經營的森林，且無不必要的浪費。\<br><br>由於貴工坊的木材加工坊嚴格遵循我們的安全與品質標準，審計委員會確認貴工坊完全符合國家工藝標準。\[146]。官方授權憑證有效期至2030年2月止，其間須接受年度監督審查。我們祝賀貴工坊工匠持續展現如此卓越的精湛工藝。</div></details></div><div class="passage-questions-panel"><article class="question p6-question" id="question-143" tabindex="-1" data-question="143"><div class="qnum"><b>143.</b> Select the best answer to complete blank [143].</div><div class="choices"><label class="choice" for="q143_A"><input type="radio" id="q143_A" name="q143" value="A"><span><b>A</b>. was awarding</span></label><label class="choice" for="q143_B"><input type="radio" id="q143_B" name="q143" value="B"><span><b>B</b>. awards</span></label><label class="choice" for="q143_C"><input type="radio" id="q143_C" name="q143" value="C"><span><b>C</b>. has been awarded</span></label><label class="choice" for="q143_D"><input type="radio" id="q143_D" name="q143" value="D"><span><b>D</b>. will award</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 3: 主動與被動語態 / Chap 2: 時態（現在完成被動式 has been awarded）</div><div class="exp-body"><strong>【正解解析】：</strong>主詞 Lindholm Furniture Workshop（家具工坊）與及物動詞 award（授予）之間為被動關係，表示「工坊已被授予該證書」。後文審計皆已完成，宣告目前已獲得認證的結果，應選用現在完成被動式 (C) has been awarded。<br><br><strong>【干擾選項剖析】：</strong>(A) was awarding 為過去進行主動式；(D) will award 為未來主動式；(B) awards 為現在主動式，主動語態皆無法帶出工坊接受獎項的文意。<br><br><strong>【核心詞彙】：</strong>accreditation (n.) 認證、認可；craftsmanship (n.) 工藝、手藝；artisan distinction (n.) 工藝卓越</div></div></article><article class="question p6-question" id="question-144" tabindex="-1" data-question="144"><div class="qnum"><b>144.</b> Select the best answer to complete blank [144].</div><div class="choices"><label class="choice" for="q144_A"><input type="radio" id="q144_A" name="q144" value="A"><span><b>A</b>. traceability</span></label><label class="choice" for="q144_B"><input type="radio" id="q144_B" name="q144" value="B"><span><b>B</b>. negligence</span></label><label class="choice" for="q144_C"><input type="radio" id="q144_C" name="q144" value="C"><span><b>C</b>. hesitation</span></label><label class="choice" for="q144_D"><input type="radio" id="q144_D" name="q144" value="D"><span><b>D</b>. volatility</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">商務單字與搭配詞（特選食品品質認證核心專有名詞：traceability 溯源性/產銷履歷）</div><div class="exp-body"><strong>【正解解析】：</strong>句中提到原料木材 preserves total ______ back to responsibly managed forests（保持能一路追溯回負責任經營的森林……）。指原料來源可追溯性的專有名詞即為 traceability。(A) 為最佳解。<br><br><strong>【干擾選項剖析】：</strong>(C) hesitation（猶豫）；(B) negligence（疏忽、過失）；(D) volatility（波動性、易變性），皆不合品質認證語境。<br><br><strong>【核心詞彙】：</strong>responsibly managed (adj.) 負責任經營的；craftsmanship (n.) 工藝；traceability (n.) 溯源性、可追溯度</div></div></article><article class="question p6-question" id="question-145" tabindex="-1" data-question="145"><div class="qnum"><b>145.</b> Select the best answer to complete blank [145].</div><div class="choices"><label class="choice" for="q145_A"><input type="radio" id="q145_A" name="q145" value="A"><span><b>A</b>. Unless</span></label><label class="choice" for="q145_B"><input type="radio" id="q145_B" name="q145" value="B"><span><b>B</b>. Despite</span></label><label class="choice" for="q145_C"><input type="radio" id="q145_C" name="q145" value="C"><span><b>C</b>. Whereas</span></label><label class="choice" for="q145_D"><input type="radio" id="q145_D" name="q145" value="D"><span><b>D</b>. Because</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">Chap 4: 副詞子句與連接詞（表因果之從屬連接詞 Because）</div><div class="exp-body"><strong>【正解解析】：</strong>空格後引導完整副詞子句 your finishing workshop adheres strictly to... benchmarks（因加工坊嚴格遵守標準），主要子句為 the audit board confirmed your full compliance（委員會確認完全合規）。二者為因果關係，應選用表示原因的從屬連接詞 (D) Because。<br><br><strong>【干擾選項剖析】：</strong>(B) Despite 為介系詞，不能引導完整子句；(A) Unless 表否定條件（除非）；(C) Whereas 表對比（然而），語意皆不通順。<br><br><strong>【核心詞彙】：</strong>maturation (n.) 熟成；adhere to (phr.) 遵守、堅持；compliance (n.) 合規</div></div></article><article class="question p6-question" id="question-146" tabindex="-1" data-question="146"><div class="qnum"><b>146.</b> Select the best answer to complete blank [146].</div><div class="choices"><label class="choice" for="q146_A"><input type="radio" id="q146_A" name="q146" value="A"><span><b>A</b>. Digital copies of the certified trademark logo have been attached to this email transmission.</span></label><label class="choice" for="q146_B"><input type="radio" id="q146_B" name="q146" value="B"><span><b>B</b>. Local consumers are demanding an immediate boycott of all imported furniture products.</span></label><label class="choice" for="q146_C"><input type="radio" id="q146_C" name="q146" value="C"><span><b>C</b>. Unannounced facility inspections will be permanently abolished across all Nordic countries.</span></label><label class="choice" for="q146_D"><input type="radio" id="q146_D" name="q146" value="D"><span><b>D</b>. The furniture guild is liquidating its assets following a severe financial insolvency.</span></label></div><div class="explanation-box" data-exp-box hidden><div class="exp-tag">篇章結構與句子插入（段落上下文銜接：認證標章傳送）</div><div class="exp-body"><strong>【正解解析】：</strong>前句宣布獲得國家工藝標準認證，後句指出授權憑證效期至2030年2月。(A) 選項「認證商標標誌的數位圖檔已隨本電子郵件附上」符合官方認證機構在核准信中提供標章數位檔案供廠商印刷使用的標準商業實務，上下文銜接流暢自然。<br><br><strong>【干擾選項剖析】：</strong>(C) 永久取消突擊檢查（與後文 annual surveillance inspections 矛盾）；(D) 清算公會資產（荒謬）；(B) 消費者抵制進口家具（無關）。<br><br><strong>【核心詞彙】：</strong>trademark logo (n.) 商標標誌；transmission (n.) 傳送；exemplary (adj.) 模範的、典範的</div></div></article></div></div></div>
+      </div>
+      <div class="submit-row">
+        <span data-completion="6">0 of 16 answered</span>
+        <button class="submit" data-submit-part="6">Submit Part 6</button>
+      </div>
+      <div class="result" data-result-part="6" role="status"></div>
+    </section>
+  </div>
+
+  <!-- Completion Summary -->
+  <section class="completion-summary" data-completion-summary hidden tabindex="-1" aria-labelledby="completionTitle">
+    <h2 id="completionTitle">測驗成果與錯題檢視 (Results & Review)</h2>
+    <p class="summary-lead">恭喜完成練習！以下為本次閱讀作答成績統計與錯題分析：</p>
+    <div class="score-overview">
+      <div class="score-box"><span>總得分 (Total Score)</span><strong><span data-final-score>0</span> / <span data-final-total>0</span></strong></div>
+      <div class="score-box"><span>正確率 (Percentage)</span><strong data-final-percent>0%</strong></div>
+      <div class="score-box"><span>錯誤題數 (Incorrect)</span><strong data-final-missed>0</strong></div>
+    </div>
+    <div class="part-breakdown" data-part-breakdown></div>
+    <h3 class="missed-heading">錯題檢討清單 (點擊可跳轉至該題)</h3>
+    <div class="missed-list" data-missed-list></div>
+
+    <div class="next-test-banner">
+      <span>想要挑戰更多？立即進行本回聽力測驗或回到選單！</span>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap">
+        <a href="test6.html" class="btn-next-action">🎧 進行 Test 6 聽力測驗</a>
+        <a href="index.html" class="btn-next-action" style="background:#4a5568">回到測驗選單</a>
+      </div>
+    </div>
+  </section>
+
+  <p class="foot">作答紀錄會自動儲存於瀏覽器，刷新頁面進度不會遺失。</p>
+</main>
+
+<script id="testData" type="application/json">{"test": 6, "theme": "Teal Healthcare", "parts": [{"number": 5, "title": "Incomplete Sentences", "label": "單句填空", "questions": [{"id": 101, "answer": "D", "tag": "Chap 1: 詞性判斷（副詞修飾及物動詞）"}, {"id": 102, "answer": "B", "tag": "Chap 4: 副詞子句與連接詞（表原因的連接詞 Since）"}, {"id": 103, "answer": "D", "tag": "Business Vocabulary: 商務核心動詞辨析（return 歸還）"}, {"id": 104, "answer": "D", "tag": "Chap 2: 動詞型態與時態（現在完成式與持續性時間副詞）"}, {"id": 105, "answer": "B", "tag": "Chap 5: 不定詞與動名詞（及物動詞 consider 後接動名詞）"}, {"id": 106, "answer": "C", "tag": "Chap 2: 動詞型態與時態（未來式被動語態 will be + p.p.）"}, {"id": 107, "answer": "C", "tag": "商務單字與搭配詞（航空營運專業術語：request clearance）"}, {"id": 108, "answer": "D", "tag": "Chap 6: 關係子句（所有格關係代名詞 whose）"}, {"id": 109, "answer": "B", "tag": "商務介系詞（時間介系詞 by 表最後期限）"}, {"id": 110, "answer": "A", "tag": "限定詞與數量詞（a few + 複數可數名詞）"}, {"id": 111, "answer": "A", "tag": "Chap 1: 詞性判斷（不可數名詞 documentation）"}, {"id": 112, "answer": "B", "tag": "Chap 10: 分詞構句與分詞形容詞（過去分詞作形容詞修飾名詞）"}, {"id": 113, "answer": "B", "tag": "Chap 4: 副詞子句與連接詞（否定條件連接詞 Unless「除非」）"}, {"id": 114, "answer": "D", "tag": "Chap 9: 假設語態與倒裝句（Should + S + 原形動詞的倒裝條件句）"}, {"id": 115, "answer": "C", "tag": "Business Vocabulary: 形容詞語意辨析（exclusive right 獨家權利）"}, {"id": 116, "answer": "D", "tag": "Chap 2: 動詞型態與時態（過去進行式表過去某時正在進行的動作）"}, {"id": 117, "answer": "A", "tag": "Chap 1: 詞性判斷（副詞修飾動詞；so + adv. + that）"}, {"id": 118, "answer": "D", "tag": "Chap 4: 副詞子句與連接詞（表目的的連接詞 so that）"}, {"id": 119, "answer": "B", "tag": "商務單字與搭配詞（物流營運搭配詞：at full capacity 全負載/滿載運轉）"}, {"id": 120, "answer": "C", "tag": "商務介系詞與搭配詞（空間介系詞 throughout 遍布、在…各處）"}, {"id": 121, "answer": "D", "tag": "Chap 3: 主動與被動語態（狀態被動慣用句型 be equipped with 配備有…）"}, {"id": 122, "answer": "D", "tag": "Chap 6: 關係子句（介系詞 + 受格關係代名詞 whom）"}, {"id": 123, "answer": "C", "tag": "Business Vocabulary: 形容詞語意辨析（stringent 嚴格的）"}, {"id": 124, "answer": "B", "tag": "限定詞與數量詞（another + 數字 + 複數名詞表「再……」）"}, {"id": 125, "answer": "A", "tag": "Business Vocabulary: 名詞語意辨析（arbitration 仲裁）"}, {"id": 126, "answer": "C", "tag": "商務單字與搭配詞（電商倉儲物流核心動詞：expedite 加速、催辦）"}, {"id": 127, "answer": "B", "tag": "Business Vocabulary: 商務動賓搭配（settle an invoice 結清帳款）"}, {"id": 128, "answer": "C", "tag": "Chap 2: 動詞型態與時態（現在完成式與 already）"}, {"id": 129, "answer": "B", "tag": "Business Vocabulary: 副詞語意辨析（mutually beneficial 互利的）"}, {"id": 130, "answer": "B", "tag": "Business Vocabulary: 形容詞語意辨析（perishable 易腐壞的）"}]}, {"number": 6, "title": "Text Completion", "label": "短文填空", "questions": [{"id": 131, "answer": "C", "tag": "Chap 2: 動詞型態與時態（未來式）"}, {"id": 132, "answer": "A", "tag": "Chap 1: 詞性判斷（形容詞修飾名詞）"}, {"id": 133, "answer": "B", "tag": "Part 6: 全句插入（承接新制服，說明配發內容）"}, {"id": 134, "answer": "A", "tag": "Chap 1: 詞性判斷（副詞修飾動詞）"}, {"id": 135, "answer": "C", "tag": "Chap 3: 主動與被動語態（未來式被動）"}, {"id": 136, "answer": "B", "tag": "Part 6: 全句插入（承接「歡迎伴侶參加」，說明來賓人數限制）"}, {"id": 137, "answer": "D", "tag": "Chap 1: 詞性判斷（形容詞修飾名詞）"}, {"id": 138, "answer": "C", "tag": "Chap 2: 動詞型態（情態助動詞 must + be + p.p.）"}, {"id": 139, "answer": "A", "tag": "Chap 2: 動詞型態（主要動詞 appear + to V）"}, {"id": 140, "answer": "C", "tag": "Part 6: 全句插入（承接正面成果，再以 however 轉折）"}, {"id": 141, "answer": "A", "tag": "商務介系詞（with + 名詞 + V-ing 表附帶狀況）"}, {"id": 142, "answer": "D", "tag": "商務介系詞（樓層用 on）"}, {"id": 143, "answer": "C", "tag": "Chap 3: 主動與被動語態 / Chap 2: 時態（現在完成被動式 has been awarded）"}, {"id": 144, "answer": "A", "tag": "商務單字與搭配詞（特選食品品質認證核心專有名詞：traceability 溯源性/產銷履歷）"}, {"id": 145, "answer": "D", "tag": "Chap 4: 副詞子句與連接詞（表因果之從屬連接詞 Because）"}, {"id": 146, "answer": "A", "tag": "篇章結構與句子插入（段落上下文銜接：認證標章傳送）"}]}]}</script>
+<script>
+(()=>{
+'use strict';
+const DATA=JSON.parse(document.getElementById('testData').textContent);
+const byPart=Object.fromEntries(DATA.parts.map(part=>[part.number,part]));
+const state={active:5,answers:{},parts:{5:{submitted:false,score:0},6:{submitted:false,score:0}}};
+const STORAGE_KEY=`toeic_reading_test_${DATA.test}_v1`;
+
+const tabs=document.getElementById('partTabs');
+const summary=document.querySelector('[data-completion-summary]');
+
+function saveProgress(){
+  try{
+    const payload={
+      answers:state.answers,
+      submittedParts:Object.entries(state.parts).filter(([_,v])=>v.submitted).map(([k])=>parseInt(k,10)),
+      activePart:state.active
+    };
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(payload));
+  }catch(e){}
+}
+
+function updateCompletion(partNum){
+  const part=byPart[partNum];
+  if(!part)return;
+  const count=part.questions.filter(q=>state.answers['q'+q.id]).length;
+  const el=document.querySelector(`[data-completion="${partNum}"]`);
+  if(el)el.textContent=`${count} of ${part.questions.length} answered`;
+  
+  if(partNum===6){
+    part.questions.forEach(q=>{
+      const chips=document.querySelectorAll(`.blank-chip[data-jump="${q.id}"]`);
+      chips.forEach(c=>{
+        if(state.answers['q'+q.id])c.classList.add('answered');
+        else c.classList.remove('answered');
+      });
+    });
+  }
+}
+
+function showPart(n,scrollTop=true){
+  if(!byPart[n])return;
+  state.active=n;
+  tabs.querySelectorAll('[data-tab]').forEach(btn=>{
+    const match=parseInt(btn.dataset.tab,10)===n;
+    btn.classList.toggle('active',match);
+    btn.setAttribute('aria-selected',match?'true':'false');
+  });
+  document.querySelectorAll('.panel').forEach(p=>{
+    p.classList.toggle('active',parseInt(p.dataset.part,10)===n);
+  });
+  if(scrollTop){
+    const panel=document.querySelector(`.panel[data-part="${n}"]`);
+    if(panel)panel.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  saveProgress();
+}
+
+tabs.querySelectorAll('[data-tab]').forEach(btn=>{
+  btn.addEventListener('click',()=>showPart(parseInt(btn.dataset.tab,10)));
+});
+
+document.querySelectorAll('.blank-chip').forEach(chip=>{
+  chip.addEventListener('click',()=>{
+    const qid=chip.dataset.jump;
+    const card=document.getElementById(`question-${qid}`);
+    if(card){
+      card.scrollIntoView({behavior:'smooth',block:'center'});
+      card.classList.add('highlight-target');
+      setTimeout(()=>card.classList.remove('highlight-target'),2000);
+      card.focus({preventScroll:true});
+    }
+  });
+});
+
+document.querySelectorAll('.panel input[type="radio"]').forEach(input=>{
+  input.addEventListener('change',e=>{
+    const qid=e.target.name.replace(/^q/,'');
+    state.answers[e.target.name]=e.target.value;
+    const partNum=parseInt(e.target.closest('.panel').dataset.part,10);
+    updateCompletion(partNum);
+    saveProgress();
+  });
+});
+
+function currentPct(){
+  const score=Object.values(state.parts).reduce((a,p)=>a+p.score,0);
+  const total=DATA.parts.reduce((sum,p)=>sum+p.questions.length,0);
+  return total?Math.round(score/total*100):0;
+}
+
+function renderCompletion(focus=false){
+  const score=Object.values(state.parts).reduce((a,p)=>a+p.score,0);
+  const total=DATA.parts.reduce((sum,p)=>sum+p.questions.length,0);
+  const pct=total?Math.round(score/total*100):0;
+  const missed=DATA.parts.flatMap(part=>part.questions.filter(q=>state.answers['q'+q.id]!==q.answer).map(q=>({q,part:part.number,response:state.answers['q'+q.id]||''})));
+
+  summary.querySelector('[data-final-score]').textContent=score;
+  summary.querySelector('[data-final-total]').textContent=total;
+  summary.querySelector('[data-final-percent]').textContent=pct+'%';
+  summary.querySelector('[data-final-missed]').textContent=missed.length;
+  summary.querySelector('[data-part-breakdown]').innerHTML=DATA.parts.map(part=>`<div class="part-score"><b>Part ${part.number} (${part.label})</b><span><strong>${state.parts[part.number].score}</strong> / ${part.questions.length} 正確</span></div>`).join('');
+
+  summary.querySelector('[data-missed-list]').innerHTML=missed.length?missed.map(item=>`
+    <article class="missed-row" data-missed-question="${item.q.id}">
+      <span><b>第 ${item.q.id} 題</b><small class="missed-label">Part ${item.part} · ${item.q.tag}</small></span>
+      <span><small class="missed-label">您的作答</small><b data-student-answer>${item.response||'未作答'}</b></span>
+      <span><small class="missed-label">正確解答</small><b data-correct-answer>${item.q.answer}</b></span>
+      <button class="review-jump" type="button" data-review-question="${item.q.id}" data-review-part="${item.part}">檢視題目</button>
+    </article>`).join(''):'<p class="perfect-note">🎉 全對！恭喜在本次閱讀模擬測驗獲得滿分！</p>';
+
+  summary.querySelectorAll('[data-review-question]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const qid=btn.dataset.reviewQuestion;
+      const partNum=parseInt(btn.dataset.reviewPart,10);
+      showPart(partNum,false);
+      setTimeout(()=>{
+        const card=document.getElementById(`question-${qid}`);
+        if(card){
+          card.scrollIntoView({behavior:'smooth',block:'center'});
+          card.classList.add('highlight-target');
+          setTimeout(()=>card.classList.remove('highlight-target'),2000);
+          card.focus({preventScroll:true});
+        }
+      },150);
+    });
+  });
+
+  summary.hidden=false;
+  if(focus){
+    summary.scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(()=>summary.focus({preventScroll:true}),250);
+  }
+}
+
+function gradePart(n,report){
+  const ps=state.parts[n],part=byPart[n],panel=document.querySelector(`.panel[data-part="${n}"]`);
+  let score=0;
+  part.questions.forEach(q=>{
+    const picked=state.answers['q'+q.id],ok=picked===q.answer;
+    if(ok)score++;
+    const card=panel.querySelector(`[data-question="${q.id}"]`);
+    if(card){
+      card.classList.add(ok?'review-correct':'review-wrong');
+      const choices=card.querySelectorAll('.choice');
+      choices.forEach(ch=>{
+        const inp=ch.querySelector('input');
+        if(inp.value===q.answer)ch.style.borderColor='var(--good)';
+        else if(inp.checked && !ok)ch.style.borderColor='var(--bad)';
+      });
+      card.querySelectorAll('input').forEach(i=>i.disabled=true);
+    }
+  });
+  ps.score=score;
+  ps.submitted=true;
+  panel.classList.add('submitted');
+  panel.querySelector(`[data-submit-part="${n}"]`).disabled=true;
+
+  panel.querySelectorAll('[data-trans]').forEach(t=>t.hidden=false);
+  panel.querySelectorAll('[data-exp-box]').forEach(e=>e.hidden=false);
+
+  const cumulative=Object.values(state.parts).reduce((a,p)=>a+p.score,0);
+  const total=DATA.parts.reduce((sum,p)=>sum+p.questions.length,0);
+  const submittedCount=Object.values(state.parts).filter(p=>p.submitted).length;
+  const next=DATA.parts.find(p=>!state.parts[p.number].submitted);
+  const isComplete=!next;
+  const result=panel.querySelector(`[data-result-part="${n}"]`);
+
+  result.innerHTML=`<strong>Part ${n} 得分：${score} / ${part.questions.length}</strong><br>${isComplete?`全卷完成！總分：${cumulative} / ${total} (${currentPct()}%)`:`已完成 ${submittedCount} / ${DATA.parts.length} 個部分。提交所有 Part 後將顯示全卷成果。`}`;
+  result.classList.add('show');
+
+  if(next){
+    result.insertAdjacentHTML('beforeend',`<br><button class="submit" style="margin-top:.8rem" data-next="${next.number}">前往 Part ${next.number} (${next.label})</button>`);
+    result.querySelector('[data-next]').addEventListener('click',()=>showPart(next.number));
+  }else{
+    result.insertAdjacentHTML('beforeend','<br><b>測驗完成！請往下查看完整成績與錯題詳解。</b>');
+  }
+
+  saveProgress();
+  renderCompletion(isComplete&&report);
+}
+
+document.querySelectorAll('[data-submit-part]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const n=parseInt(btn.dataset.submitPart,10);
+    const part=byPart[n];
+    const answered=part.questions.filter(q=>state.answers['q'+q.id]).length;
+    if(answered<part.questions.length){
+      if(!confirm(`Part ${n} 尚有 ${part.questions.length - answered} 題未作答，確定現在交卷嗎？`))return;
+    }
+    gradePart(n,true);
+  });
+});
+
+function loadSaved(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(!saved)return;
+    if(saved.answers){
+      state.answers=saved.answers;
+      for(const [name,val] of Object.entries(saved.answers)){
+        const input=document.querySelector(`input[name="${name}"][value="${val}"]`);
+        if(input)input.checked=true;
+      }
+    }
+    if(saved.submittedParts&&Array.isArray(saved.submittedParts)){
+      for(const p of saved.submittedParts){
+        if(state.parts[p])gradePart(p,false);
+      }
+    }
+    DATA.parts.forEach(part=>{
+      updateCompletion(part.number);
+    });
+    if(saved.activePart&&byPart[saved.activePart])showPart(saved.activePart,false);
+  }catch(e){}
+}
+
+loadSaved();
+})();
+</script>
+</body>
+</html>
