@@ -2,7 +2,8 @@ import zipfile
 import json
 import re
 import html
-import os
+import argparse
+from pathlib import Path
 
 THEMES = {
     1: {"name": "Executive Blue", "brand": "#143a5a", "accent": "#1976a8", "pale": "#eaf4f8"},
@@ -22,10 +23,14 @@ def fmt_md(text):
         return ""
     # strip accidental trailing part headers from explanations
     text = re.sub(r'\s*\*\*(第二部分|第三部分)[^\*]*\*\*\s*$', '', text.strip())
+    # Keep literal footnote asterisks out of the emphasis parser.
+    text = text.replace('\\*', '\x00').replace('\\\n', '\n')
+    text = re.sub(r'\\([_*\[\]().<>-])', r'\1', text)
     t = html.escape(text)
     t = re.sub(r'\*\*(.*?)\*\*', r'<strong>\1</strong>', t)
-    t = t.replace('\\n', '<br>').replace('\n', '<br>')
-    return t
+    t = re.sub(r'\*([^*\n]+)\*', r'<em>\1</em>', t)
+    t = t.replace('\x00', '*')
+    return t.replace('\\n', '<br>').replace('\n', '<br>')
 
 def render_passage_text(text):
     lines = text.split('\n')
@@ -33,18 +38,38 @@ def render_passage_text(text):
         lines = lines[1:]
     body = "\n".join(lines).strip()
     esc = html.escape(body)
+    esc = re.sub(r'^―{10,}$', '<hr class="doc-sep">', esc, flags=re.MULTILINE)
     esc = re.sub(r'_{3,}\s*\[(\d+)\]', r'<span class="blank-chip" data-jump="\1">[\1]</span>', esc)
     return esc
 
-def generate_test(test_num):
-    zip_path = f'C:/Users/RoyWang/OneDrive/CoolEnglish/檢定/TOEIC/多益閱讀/TOEIC_Reading_Mock_Test_{test_num:02d}.zip'
+def load_test(zip_path):
     with zipfile.ZipFile(zip_path) as z:
         raw_html = z.read('index.html').decode('utf-8')
-        data = json.loads(re.search(r'window\.TOEIC_DATA\s*=\s*(\{.*?\});\s*</script>', raw_html, re.DOTALL).group(1))
+    match = re.search(r'window\.TOEIC_DATA\s*=\s*(\{.*?\});\s*</script>', raw_html, re.DOTALL)
+    if not match:
+        raise ValueError(f'{zip_path}: missing TOEIC_DATA')
+    data = json.loads(match.group(1))
+    for part_id, start, end in [('part5', 101, 130), ('part6', 131, 146), ('part7', 147, 200)]:
+        part = next(p for p in data['parts'] if p['id'] == part_id)
+        questions = part.get('questions', [q for pas in part.get('passages', []) for q in pas['questions']])
+        if [q['num'] for q in questions] != list(range(start, end + 1)):
+            raise ValueError(f'{zip_path}: incomplete {part_id}')
+        for q in questions:
+            choices = q['choices']
+            if [c['letter'] for c in choices] != list('ABCD') or sum(bool(c.get('correct')) for c in choices) != 1:
+                raise ValueError(f'{zip_path}: invalid choices for {q["num"]}')
+            if q['explanation']['correct_letter'] != next(c['letter'] for c in choices if c['correct']):
+                raise ValueError(f'{zip_path}: explanation key mismatch for {q["num"]}')
+    return data
+
+
+def generate_test(test_num, source_dir, output_dir):
+    data = load_test(Path(source_dir) / f'TOEIC_Reading_Mock_Test_{test_num:02d}.zip')
 
     theme = THEMES[test_num]
     p5 = next(p for p in data['parts'] if p['id'] == 'part5')
     p6 = next(p for p in data['parts'] if p['id'] == 'part6')
+    p7 = next(p for p in data['parts'] if p['id'] == 'part7')
 
     client_data = {
         "test": test_num,
@@ -79,6 +104,15 @@ def generate_test(test_num):
         ]
     }
 
+    client_data['parts'].append({
+        'number': 7, 'title': 'Reading Comprehension', 'label': '閱讀理解',
+        'questions': [
+            {'id': q['num'], 'answer': next(c['letter'] for c in q['choices'] if c['correct']),
+             'tag': q['explanation'].get('tag', '')}
+            for pas in p7['passages'] for q in pas['questions']
+        ]
+    })
+
     p5_html = []
     for q in p5["questions"]:
         qid = q["num"]
@@ -108,8 +142,11 @@ def generate_test(test_num):
             f'</article>'
         )
 
-    p6_html = []
-    for pi, pas in enumerate(p6["passages"]):
+    passage_html = {6: [], 7: []}
+    passage_sets = [(number, index, passage)
+                    for number, part in [(6, p6), (7, p7)]
+                    for index, passage in enumerate(part['passages'])]
+    for part_num, pi, pas in passage_sets:
         pas_header = html.escape(pas.get("header", f"Questions {pas['range'][0]}–{pas['range'][1]}"))
         pas_text_html = render_passage_text(pas["text"])
         trans_html = fmt_md(pas.get("translation", ""))
@@ -131,9 +168,11 @@ def generate_test(test_num):
             exp_tag = html.escape(q.get("explanation", {}).get("tag", ""))
             exp_body = fmt_md(q.get("explanation", {}).get("body", ""))
 
+            stem = re.sub(rf'^{qid}\.\s*', '', q.get('stem', ''))
+            prompt = (f'Select the best answer to complete blank [{qid}].' if part_num == 6 else stem)
             pas_qs_html.append(
                 f'<article class="question p6-question" id="question-{qid}" tabindex="-1" data-question="{qid}">'
-                f'<div class="qnum"><b>{qid}.</b> Select the best answer to complete blank [{qid}].</div>'
+                f'<div class="qnum"><b>{qid}.</b></div><div class="qprompt">{html.escape(prompt)}</div>'
                 f'<div class="choices">{"".join(choices_html)}</div>'
                 f'<div class="explanation-box" data-exp-box hidden>'
                 f'<div class="exp-tag">{exp_tag}</div>'
@@ -142,8 +181,8 @@ def generate_test(test_num):
                 f'</article>'
             )
 
-        p6_html.append(
-            f'<div class="passage-block" id="passage-{pi+1}">'
+        passage_html[part_num].append(
+            f'<div class="passage-block" id="passage-{part_num}-{pi+1}">'
             f'<div class="passage-header"><strong>{pas_header}</strong></div>'
             f'<div class="passage-layout">'
             f'<div class="passage-text-panel">'
@@ -202,7 +241,7 @@ button{{cursor:pointer;touch-action:manipulation}}
 .theme-badge{{flex:none;border:1px solid #ffffff55;background:#ffffff18;border-radius:999px;padding:.38rem .75rem;font-size:.8rem;font-weight:700;letter-spacing:.03em}}
 
 .shell{{width:min(100%,1180px);margin:auto;padding:clamp(.7rem,2vw,1.35rem)}}
-.summary{{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.7rem;margin-bottom:1rem}}
+.summary{{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.7rem;margin-bottom:1rem}}
 .part-tab{{min-width:0;border:1px solid var(--line);border-top:4px solid transparent;background:#fff;border-radius:.85rem;padding:.85rem 1rem;text-align:left;color:var(--ink);box-shadow:0 4px 14px #1e344510;transition:transform .15s,box-shadow .15s,border-color .15s}}
 .part-tab:not([disabled]):hover{{transform:translateY(-2px);box-shadow:0 8px 20px #1e34451c}}
 .part-tab strong,.part-tab span{{display:block}}
@@ -220,7 +259,7 @@ button{{cursor:pointer;touch-action:manipulation}}
 .question.highlight-target{{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 35%,transparent);animation:pulse-highlight 1.5s ease-out}}
 @keyframes pulse-highlight{{0%{{transform:scale(1.01)}}50%{{transform:scale(1)}}100%{{transform:scale(1)}}}}
 .qnum{{font-size:1.05rem;margin:0 0 .5rem;color:var(--brand);font-weight:800}}
-.qprompt{{font-size:1.02rem;line-height:1.6;margin-bottom:.85rem;color:#1e293b;font-weight:500}}
+.qprompt{{font-size:1.02rem;line-height:1.6;margin-bottom:.85rem;color:#1e293b;font-weight:500;white-space:pre-line}}
 
 .choices{{display:grid;gap:.5rem}}
 .choice{{display:flex;min-width:0;align-items:flex-start;gap:.65rem;border:1px solid var(--line);border-radius:.65rem;padding:.7rem .85rem;cursor:pointer;transition:background .15s,border-color .15s,transform .15s}}
@@ -235,7 +274,8 @@ button{{cursor:pointer;touch-action:manipulation}}
 .passage-header{{color:var(--brand);font-size:1.05rem;padding:.2rem .4rem .9rem;border-bottom:1px solid var(--line);margin-bottom:1rem}}
 .passage-layout{{display:grid;grid-template-columns:1.15fr 1fr;gap:1.2rem;align-items:start}}
 .passage-text-panel{{background:#fff;border:1px solid var(--line);border-radius:.85rem;padding:1.2rem;box-shadow:0 3px 12px #20384d0b;position:sticky;top:5.5rem;max-height:calc(100vh - 7rem);overflow-y:auto}}
-.passage-text{{line-height:1.8;color:#2d3748;white-space:pre-line;font-size:.96rem}}
+.passage-text{{line-height:1.8;color:#2d3748;white-space:pre-line;font-size:.96rem;overflow-wrap:anywhere}}
+.doc-sep{{border:0;border-top:3px solid var(--accent);margin:1.5rem 0;opacity:.65}}
 .blank-chip{{display:inline-block;background:var(--brand);color:#fff;padding:.12rem .5rem;border-radius:6px;font-weight:700;font-size:.88rem;margin:0 .2rem;cursor:pointer;transition:transform .15s,background .15s}}
 .blank-chip:hover{{background:var(--accent);transform:scale(1.08)}}
 .blank-chip.answered{{background:var(--accent)}}
@@ -327,7 +367,7 @@ button{{cursor:pointer;touch-action:manipulation}}
     <div class="top-left">
       <a href="index.html" class="back-btn">← 回到測驗選單</a>
       <h1>多益閱讀模擬測驗 Test {test_num}</h1>
-      <p>Part 5 & Part 6 · 共 46 題 (Q101–Q146) · 附完整文法解析與篇章中譯</p>
+      <p>Part 5–7 · 共 100 題 (Q101–Q200) · 建議 75 分鐘 · 附完整解析與篇章中譯</p>
     </div>
     <div class="top-right">
       <a href="test{test_num}.html" class="switch-mode-btn">🎧 切換至聽力測驗 Test {test_num}</a>
@@ -345,6 +385,10 @@ button{{cursor:pointer;touch-action:manipulation}}
     <button class="part-tab" data-tab="6">
       <strong>Part 6: 短文填空</strong>
       <span>Text Completion · 16 題 (Q131–Q146)</span>
+    </button>
+    <button class="part-tab" data-tab="7">
+      <strong>Part 7: 閱讀理解</strong>
+      <span>Reading Comprehension · 54 題 (Q147–Q200)</span>
     </button>
   </nav>
 
@@ -372,13 +416,28 @@ button{{cursor:pointer;touch-action:manipulation}}
         <p class="directions">Directions: Read the texts that follow. A word, phrase, or sentence is missing in parts of each text. Four answer choices for each empty space are given below the text. Select the best answer to complete the text. (Questions 131–146)</p>
       </div>
       <div class="questions">
-        {"".join(p6_html)}
+        {"".join(passage_html[6])}
       </div>
       <div class="submit-row">
         <span data-completion="6">0 of 16 answered</span>
         <button class="submit" data-submit-part="6">Submit Part 6</button>
       </div>
       <div class="result" data-result-part="6" role="status"></div>
+    </section>
+
+    <section class="panel" data-part="7" aria-labelledby="part-title-7">
+      <div class="part-head">
+        <h2 id="part-title-7">Part 7: Reading Comprehension (閱讀理解)</h2>
+        <p class="directions">Directions: Read the single- and multiple-document sets below. Select the best answer for each question. (Questions 147–200)</p>
+      </div>
+      <div class="questions">
+        {"".join(passage_html[7])}
+      </div>
+      <div class="submit-row">
+        <span data-completion="7">0 of 54 answered</span>
+        <button class="submit" data-submit-part="7">Submit Part 7</button>
+      </div>
+      <div class="result" data-result-part="7" role="status"></div>
     </section>
   </div>
 
@@ -404,16 +463,16 @@ button{{cursor:pointer;touch-action:manipulation}}
     </div>
   </section>
 
-  <p class="foot">作答紀錄會自動儲存於瀏覽器，刷新頁面進度不會遺失。</p>
+  <p class="foot">可依 Part 分段練習，交卷後顯示該部分解析與中譯。作答紀錄自動儲存於目前瀏覽器，重新整理不會遺失；不同網站的紀錄分開保存。</p>
 </main>
 
-<script id="testData" type="application/json">{json.dumps(client_data, ensure_ascii=False)}</script>
+<script id="testData" type="application/json">{json.dumps(client_data, ensure_ascii=False).replace('<', chr(92) + 'u003c')}</script>
 <script>
 (()=>{{
 'use strict';
 const DATA=JSON.parse(document.getElementById('testData').textContent);
 const byPart=Object.fromEntries(DATA.parts.map(part=>[part.number,part]));
-const state={{active:5,answers:{{}},parts:{{5:{{submitted:false,score:0}},6:{{submitted:false,score:0}}}}}};
+const state={{active:5,answers:{{}},parts:Object.fromEntries(DATA.parts.map(p=>[p.number,{{submitted:false,score:0}}]))}};
 const STORAGE_KEY=`toeic_reading_test_${{DATA.test}}_v1`;
 
 const tabs=document.getElementById('partTabs');
@@ -454,7 +513,7 @@ function showPart(n,scrollTop=true){{
   tabs.querySelectorAll('[data-tab]').forEach(btn=>{{
     const match=parseInt(btn.dataset.tab,10)===n;
     btn.classList.toggle('active',match);
-    btn.setAttribute('aria-selected',match?'true':'false');
+    btn.setAttribute('aria-pressed',match?'true':'false');
   }});
   document.querySelectorAll('.panel').forEach(p=>{{
     p.classList.toggle('active',parseInt(p.dataset.part,10)===n);
@@ -500,6 +559,10 @@ function currentPct(){{
 }}
 
 function renderCompletion(focus=false){{
+  if(!DATA.parts.every(p=>state.parts[p.number].submitted)){{
+    summary.hidden=true;
+    return;
+  }}
   const score=Object.values(state.parts).reduce((a,p)=>a+p.score,0);
   const total=DATA.parts.reduce((sum,p)=>sum+p.questions.length,0);
   const pct=total?Math.round(score/total*100):0;
@@ -606,39 +669,40 @@ function loadSaved(){{
   try{{
     const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
     if(!saved)return;
-    if(saved.answers){{
-      state.answers=saved.answers;
-      for(const [name,val] of Object.entries(saved.answers)){{
-        const input=document.querySelector(`input[name="${{name}}"][value="${{val}}"]`);
-        if(input)input.checked=true;
+    for(const q of DATA.parts.flatMap(part=>part.questions)){{
+      const name='q'+q.id,val=saved.answers?.[name];
+      if(typeof val==='string' && /^[A-D]$/.test(val)){{
+        state.answers[name]=val;
+        document.querySelector(`input[name="${{name}}"][value="${{val}}"]`).checked=true;
       }}
     }}
-    if(saved.submittedParts&&Array.isArray(saved.submittedParts)){{
-      for(const p of saved.submittedParts){{
-        if(state.parts[p])gradePart(p,false);
+    if(Array.isArray(saved.submittedParts)){{
+      for(const part of DATA.parts){{
+        if(saved.submittedParts.includes(part.number))gradePart(part.number,false);
       }}
     }}
     DATA.parts.forEach(part=>{{
       updateCompletion(part.number);
     }});
-    if(saved.activePart&&byPart[saved.activePart])showPart(saved.activePart,false);
+    if(Number.isInteger(saved.activePart)&&byPart[saved.activePart])showPart(saved.activePart,false);
   }}catch(e){{}}
 }}
 
 loadSaved();
+showPart(state.active,false);
 }})();
 </script>
 </body>
 </html>
 """
-    out_path = f'C:/Users/RoyWang/Desktop/Web_tool/toeic-listening-practice/reading{test_num}.html'
+    out_path = Path(output_dir) / f'reading{test_num}.html'
     with open(out_path, 'w', encoding='utf-8') as f:
         f.write(out_html)
-    print(f'Generated {out_path} ({len(out_html)} bytes)')
+    print(f'Generated {out_path} ({len(out_html.encode("utf-8"))} bytes)')
 
-def update_listening_tests():
+def update_listening_tests(output_dir):
     for t in range(1, 11):
-        path = f'C:/Users/RoyWang/Desktop/Web_tool/toeic-listening-practice/test{t}.html'
+        path = Path(output_dir) / f'test{t}.html'
         with open(path, 'r', encoding='utf-8') as f:
             content = f.read()
 
@@ -658,6 +722,10 @@ def update_listening_tests():
         print(f'Updated test{t}.html with link to reading{t}.html')
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Generate all 10 reading tests (Parts 5–7) from approved full SCORM ZIPs.')
+    parser.add_argument('--source-dir', required=True, type=Path)
+    parser.add_argument('--output-dir', type=Path, default=Path(__file__).resolve().parent)
+    args = parser.parse_args()
+    args.output_dir.mkdir(parents=True, exist_ok=True)
     for i in range(1, 11):
-        generate_test(i)
-    update_listening_tests()
+        generate_test(i, args.source_dir, args.output_dir)
